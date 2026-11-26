@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "Service": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "titleAr": { "type": "string", "maxLength": 100 },
+        "titleEn": { "type": "string", "maxLength": 100 },
+        "descriptionAr": { "type": "string", "maxLength": 500 },
+        "descriptionEn": { "type": "string", "maxLength": 500 },
+        "category": { "type": "string" },
+        "basePrice": { "type": "number" },
+        "imageUrl": { "type": "string" },
+        "popular": { "type": "boolean" }
+      }
+    },
+    "Vehicle": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nameAr": { "type": "string", "maxLength": 100 },
+        "nameEn": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string" },
+        "passengers": { "type": "number" },
+        "luggage": { "type": "number" },
+        "descriptionAr": { "type": "string", "maxLength": 300 },
+        "descriptionEn": { "type": "string", "maxLength": 300 },
+        "imageUrl": { "type": "string" },
+        "features": { "type": "array" }
+      }
+    },
+    "PricingRule": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "vehicleCategoryId": { "type": "string" },
+        "routeName": { "type": "string" },
+        "baseRate": { "type": "number" },
+        "notes": { "type": "string" },
+        "origin": { "type": "string", "maxLength": 150 },
+        "destination": { "type": "string", "maxLength": 150 },
+        "sedanPrice": { "type": "number" },
+        "suvPrice": { "type": "number" },
+        "miniVanPrice": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "bidirectional": { "type": "boolean" }
+      }
+    },
+    "Booking": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerPhone": { "type": "string", "maxLength": 30 },
+        "customerEmail": { "type": "string", "maxLength": 100 },
+        "serviceId": { "type": "string" },
+        "serviceName": { "type": "string" },
+        "vehicleCategoryId": { "type": "string" },
+        "pickupLocation": { "type": "string", "maxLength": 200 },
+        "dropoffLocation": { "type": "string", "maxLength": 200 },
+        "pickupDateTime": { "type": "string" },
+        "passengersCount": { "type": "number" },
+        "luggageCount": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string" },
+        "estimatedPrice": { "type": "number" },
+        "finalAgreedPrice": { "type": "number" },
+        "priceNotes": { "type": "string" },
+        "paymentStatus": { "type": "string" },
+        "adminNotes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "serviceCategory": { "type": "string" },
+        "serviceCategoryLabel": { "type": "string" },
+        "pricingType": { "type": "string" },
+        "assignedVehicleModel": { "type": "string", "maxLength": 120 },
+        "assignedDriverName": { "type": "string", "maxLength": 100 },
+        "assignmentStatus": { "type": "string" }
+      }
+    },
+    "Driver": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "vehicleAssigned": { "type": "string" },
+        "status": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "collections": {
+      "services": { "entity": "Service" },
+      "vehicles": { "entity": "Vehicle" },
+      "pricingRules": { "entity": "PricingRule" },
+      "bookings": { "entity": "Booking" },
+      "drivers": { "entity": "Driver" }
+    }
+  }
+}

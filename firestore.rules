@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public catalog collections: readable and writable for seamless app operation & seeding
+    match /services/{serviceId} {
+      allow read, write: if true;
+    }
+
+    match /vehicles/{vehicleId} {
+      allow read, write: if true;
+    }
+
+    match /pricingRules/{ruleId} {
+      allow read, write: if true;
+    }
+
+    match /drivers/{driverId} {
+      allow read, write: if true;
+    }
+
+    match /bookings/{bookingId} {
+      allow read, write: if true;
+    }
+  }
+}

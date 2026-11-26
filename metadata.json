@@ -1,0 +1,6 @@
+{
+  "name": "Al Wakeel Limousine – الوكيل لخدمات الليموزين",
+  "description": "تطبيق ليموزين ونقل فاخر في الإسكندرية والمطارات والمحافظات والساحل الشمالي.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
