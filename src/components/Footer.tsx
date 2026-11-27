@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, Shield, Phone, Mail, MapPin } from 'lucide-react';
+import { Car, Shield, Phone, MapPin } from 'lucide-react';
 import {
   ALL_SERVICE_SLUGS,
   SERVICE_SEO_CATALOG,
@@ -14,7 +14,7 @@ interface FooterProps {
 }
 
 const WHATSAPP_URL = 'https://wa.me/201000053774';
-const OFFICIAL_ADDRESS_AR = 'أبراج قمراية – رشدي – طريق الجيش – ستانلي – الإسكندرية';
+const OFFICIAL_ADDRESS_AR = 'أبراج قمراية – رشدي – طريق الجيش – الإسكندرية';
 
 export const Footer: React.FC<FooterProps> = ({
   onNavigate,
@@ -48,14 +48,13 @@ export const Footer: React.FC<FooterProps> = ({
                   الوكيل لخدمات الليموزين
                 </h3>
                 <p className="font-latin text-xs text-[#C9A96B]/90 tracking-wide" dir="ltr">
-                  Al Wakeel Limousine · Since 2014
+                  Al Wakeel Limousine
                 </p>
               </div>
             </div>
             <p className="font-sub text-[#9A9A96] max-w-md leading-relaxed">
-              تنظيم وتنسيق رحلات النقل الخاص والليموزين التنفيذي انطلاقاً من الإسكندرية إلى مطار برج العرب ومطار القاهرة والساحل الشمالي وجميع المحافظات بمعايير دقيقة.
+              ليموزين خاص من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس، وفئات خدمة تناسب الأفراد والعائلات والمجموعات. اختر الفئة وفق الركاب والحقائب، واعرف السعر أو اطلب عرضًا قبل تأكيد الرحلة.
             </p>
-            <p className="font-label text-[#91B9C8]">خبرة تمتد منذ عام 2014</p>
           </div>
 
           {/* Group 2A: Quick Navigation Links */}
@@ -193,15 +192,6 @@ export const Footer: React.FC<FooterProps> = ({
                   <span className="text-[#F6F5F1]">تواصل معنا عبر واتساب</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href="mailto:info@wakeellimousine.com"
-                  className="flex items-center gap-2.5 justify-start hover:text-white transition-colors py-0.5"
-                >
-                  <Mail className="w-4 h-4 text-[#C9A96B] shrink-0" />
-                  <span dir="ltr" className="font-latin text-[#F6F5F1] font-medium">info@wakeellimousine.com</span>
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -211,7 +201,7 @@ export const Footer: React.FC<FooterProps> = ({
           <p>© {new Date().getFullYear()} Al Wakeel Limousine – الوكيل لخدمات الليموزين. جميع الحقوق محفوظة.</p>
           <p className="flex items-center gap-2 text-[#91B9C8]">
             <Shield className="w-4 h-4 text-[#C9A96B] shrink-0" />
-            <span>حجز مسبق بدون دفع إلكتروني · تأكيد هاتفي</span>
+            <span>حجز مسبق دون دفع إلكتروني · تأكيد تفاصيل الرحلة</span>
           </p>
         </div>
       </div>
