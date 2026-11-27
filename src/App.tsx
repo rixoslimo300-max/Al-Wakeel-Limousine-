@@ -155,7 +155,6 @@ export default function App() {
           collection,
           getDocs,
           testConnection,
-          isOfflineOrNetworkError,
         } = await import('./lib/firebase');
         const connected = await testConnection();
         if (!connected || cancelled) return;
@@ -219,7 +218,10 @@ export default function App() {
           writeCatalogCache(nextServices, nextVehicles, nextRules);
         }
       } catch (error) {
-        if (isOfflineOrNetworkError(error)) {
+        const isOffline = await import('./lib/firebase')
+          .then(({ isOfflineOrNetworkError }) => isOfflineOrNetworkError(error))
+          .catch(() => false);
+        if (isOffline) {
           console.warn('Operating with cached/local catalog data because Firestore is unreachable.');
         } else {
           console.warn('Fallback to local catalog data:', error);
