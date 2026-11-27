@@ -72,16 +72,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
           <div className="flex items-center gap-2.5 text-[#C9A96B] font-label">
             <span className="w-5 h-px bg-[#C9A96B]/70 shrink-0" aria-hidden="true" />
             <span>الوكيل لخدمات الليموزين</span>
-            <span className="text-[#C9A96B]/50" aria-hidden="true">·</span>
-            <span dir="ltr" className="font-latin tracking-wider uppercase text-[11px]">Since 2014</span>
           </div>
 
           <h1 className="font-hero text-white">
-            رحلتك تستحق مستوى آخر.
+            رحلتك للمطار تبدأ من بابك… مش من الطريق.
           </h1>
 
           <p className="font-body text-[#F6F5F1]/85 max-w-xl">
-            خدمات تنقل خاصة تجمع بين الراحة والخصوصية والالتزام، من وإلى المطارات والمدن والوجهات السياحية.
+            احجز ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة. حدّد الوجهة والموعد وعدد الركاب والحقائب، واختر فئة الخدمة المناسبة؛ يظهر السعر المعتمد أو يمكنك طلب عرض سعر قبل إرسال الحجز.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-1">
@@ -141,16 +139,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
             <div className="flex items-center gap-2.5 text-[#C9A96B] font-label">
               <span className="w-6 h-px bg-[#C9A96B]/75 shrink-0" aria-hidden="true" />
               <span>الوكيل لخدمات الليموزين</span>
-              <span className="text-[#C9A96B]/50" aria-hidden="true">·</span>
-              <span dir="ltr" className="font-latin tracking-wider uppercase text-[11px]">Since 2014</span>
-            </div>
+                </div>
 
             <h1 className="font-hero text-white">
-              رحلتك تستحق مستوى آخر.
+              رحلتك للمطار تبدأ من بابك… مش من الطريق.
             </h1>
 
             <p className="font-body text-[#F6F5F1]/90 leading-relaxed">
-              خدمات تنقل خاصة تجمع بين الراحة والخصوصية والالتزام، من وإلى المطارات والمدن والوجهات السياحية.
+              احجز ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة. حدّد الوجهة والموعد وعدد الركاب والحقائب، واختر فئة الخدمة المناسبة؛ يظهر السعر المعتمد أو يمكنك طلب عرض سعر قبل إرسال الحجز.
             </p>
 
             <div className="flex flex-wrap items-center gap-3.5 pt-2">
