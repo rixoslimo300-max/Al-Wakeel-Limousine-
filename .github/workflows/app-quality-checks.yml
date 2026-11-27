@@ -31,5 +31,8 @@ jobs:
       - name: Check TypeScript
         run: npm run lint
 
+      - name: Run booking engine tests
+        run: npm run test:booking
+
       - name: Build production bundle
         run: npm run build
