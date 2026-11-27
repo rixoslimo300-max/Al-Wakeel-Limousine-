@@ -261,27 +261,27 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
       {/* 2. Original Category Editorial Description */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 border-b border-[#C9A96B]/15">
         <div className="max-w-3xl space-y-2 mb-7 text-right">
-          <p className="font-label text-[#C9A96B]">تفاصيل التجربة وملاءمة الرحلة</p>
+          <p className="font-label text-[#C9A96B]">اختيار الفئة يبدأ من احتياج رحلتك</p>
           <h2 className="font-section-heading text-white">
-            لماذا تختار فئة {spec.titleAr} من الوكيل لخدمات الليموزين؟
+            كيف تساعدك فئة {spec.titleAr} في ترتيب انتقالك؟
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 text-right">
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">طبيعة الفئة</h3>
+            <h3 className="font-subheading text-[#DFC89B]">ما الذي يميزها؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.natureAr}</p>
           </article>
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">لمن تناسب؟</h3>
+            <h3 className="font-subheading text-[#DFC89B]">هل تناسب عددكم؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.audienceAr}</p>
           </article>
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">نوع الرحلات</h3>
+            <h3 className="font-subheading text-[#DFC89B]">أين تستخدمها؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.tripTypesAr}</p>
           </article>
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">القيمة للعميل</h3>
+            <h3 className="font-subheading text-[#DFC89B]">ماذا تكسب من اختيارها؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.customerValueAr}</p>
           </article>
         </div>
@@ -398,9 +398,9 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-8 items-start">
           <div className="lg:col-span-7 space-y-5 text-right">
             <div className="space-y-1.5">
-              <p className="font-label text-[#C9A96B]">مزايا التجربة</p>
+              <p className="font-label text-[#C9A96B]">تفاصيل تصنع فرقًا في رحلتك</p>
               <h2 className="font-section-heading text-white">
-                ما الذي تحصل عليه داخل فئة {spec.titleAr}
+                قيمة فئة {spec.titleAr} في كل مرحلة من الرحلة
               </h2>
             </div>
 
@@ -511,10 +511,10 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
         <div className="max-w-3xl space-y-2 mb-6 text-right">
           <div className="flex items-center gap-2 text-[#C9A96B] font-label">
             <HelpCircle className="w-4 h-4 shrink-0" />
-            <span>إجابات دقيقة حول هذه الفئة</span>
+            <span>إجابات تساعدك تختار الفئة المناسبة</span>
           </div>
           <h2 className="font-section-heading text-white">
-            أسئلة شائعة عن فئة {spec.titleAr}
+            أسئلة عن حجز فئة {spec.titleAr}
           </h2>
         </div>
 
