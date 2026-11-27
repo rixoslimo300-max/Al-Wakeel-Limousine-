@@ -37,10 +37,10 @@ export function resolveSiteOrigin(explicitOrigin?: string | null): string {
 export const HOME_SEO = {
   title: 'Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر',
   metaDescription:
-    'الوكيل لخدمات الليموزين منذ عام 2014 – خدمات تنقل خاصة من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي بفئات خدمة تناسب احتياجك.',
+    'الوكيل لخدمات الليموزين – خدمات تنقل خاصة من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي بفئات خدمة تناسب احتياجك.',
   ogTitle: 'Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر',
   ogDescription:
-    'تنقل خاص بخصوصية كاملة من الإسكندرية إلى المطارات والمدن والوجهات السياحية منذ عام 2014. اختر فئة الخدمة المناسبة لرحلتك.',
+    'تنقل خاص بخصوصية كاملة من الإسكندرية إلى المطارات والمدن والوجهات السياحية. اختر فئة الخدمة المناسبة لرحلتك.',
   ogImagePath: '/og/al-wakeel-home.jpg',
   ogImageAltAr: 'خدمة الليموزين التنفيذي والنقل الخاص من Al Wakeel Limousine',
 };
@@ -192,14 +192,12 @@ export function buildHomeSchemaGraph(siteOriginInput?: string | null): Record<st
         url: `${origin}/`,
         image: `${origin}${HOME_SEO.ogImagePath}`,
         description:
-          'خدمات ليموزين وتنقل خاص تنفيذي منذ عام 2014، من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي وجميع المحافظات.',
-        foundingDate: '2014',
+          'خدمات ليموزين وتنقل خاص تنفيذي من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي.',
         telephone: '+201000053774',
-        email: 'info@wakeellimousine.com',
         priceRange: '850 EGP - 3600 EGP',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش – ستانلي',
+          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش',
           addressLocality: 'الإسكندرية',
           addressCountry: 'EG',
         },
@@ -293,10 +291,9 @@ export function buildServiceCategorySchemaGraph(
         name: 'Al Wakeel Limousine | الوكيل لخدمات الليموزين',
         url: `${origin}/`,
         telephone: '+201000053774',
-        email: 'info@wakeellimousine.com',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش – ستانلي',
+          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش',
           addressLocality: 'الإسكندرية',
           addressCountry: 'EG',
         },
