@@ -633,7 +633,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       await addDoc(collection(db, 'bookings'), bookingRecord);
       onBookingSubmitted?.();
     } catch (saveErr) {
-      console.warn('Booking stored locally / proceeding with WhatsApp dispatch:', saveErr);
+      console.error('Booking persistence failed; WhatsApp dispatch was blocked:', saveErr);
+      setConsentError(
+        'تعذر حفظ طلب الحجز حاليًا. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى بعد التحقق من اتصال الإنترنت.'
+      );
+      setIsSubmitting(false);
+      return;
     }
 
     const message = buildStructuredWhatsAppBookingMessage(formData, pricingSummary);
@@ -728,7 +733,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       await addDoc(collection(db, 'bookings'), bookingRecord);
       onBookingSubmitted?.();
     } catch (saveErr) {
-      console.warn('Daily rental booking stored locally / proceeding with WhatsApp:', saveErr);
+      console.error('Daily rental persistence failed; WhatsApp dispatch was blocked:', saveErr);
+      setDailyErrors((prev) => ({
+        ...prev,
+        general:
+          'تعذر حفظ طلب التأجير اليومي حاليًا. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى بعد التحقق من اتصال الإنترنت.',
+      }));
+      setIsSubmitting(false);
+      return;
     }
 
     const message = buildDailyRentalWhatsAppMessage({
