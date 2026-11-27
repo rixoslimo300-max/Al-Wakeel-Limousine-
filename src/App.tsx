@@ -6,7 +6,7 @@ import { ServicesSection, AirportTransferSelection } from './components/Services
 import { DailyRentalSection } from './components/DailyRentalSection';
 import { WhyAlWakeelSection } from './components/WhyAlWakeelSection';
 import { FleetSection } from './components/FleetSection';
-import { BookingModal, BookingFlowMode } from './components/BookingModal';
+import type { BookingFlowMode } from './components/BookingModal';
 import { OfflineIndicator } from './components/OfflineIndicator';
 
 const LazyCustomerBookings = React.lazy(() =>
@@ -29,17 +29,17 @@ import {
   getServiceCategoryPath,
 } from './data/seoCatalog';
 import { syncPageSeoAndSchema } from './lib/seoAndShare';
-import {
-  db,
-  collection,
-  getDocs,
-  testConnection,
-  isOfflineOrNetworkError,
-} from './lib/firebase';
+
 
 const LazyServiceCategoryPage = React.lazy(() =>
   import('./components/ServiceCategoryPage').then((mod) => ({
     default: mod.ServiceCategoryPage,
+  }))
+);
+
+const LazyBookingModal = React.lazy(() =>
+  import('./components/BookingModal').then((mod) => ({
+    default: mod.BookingModal,
   }))
 );
 
@@ -91,6 +91,7 @@ export default function App() {
     );
   });
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
+  const [hasMountedBooking, setHasMountedBooking] = useState(false);
 
   const [bookingMode, setBookingMode] = useState<BookingFlowMode>('transfer');
   const [preselectedDailyPackageId, setPreselectedDailyPackageId] = useState<DailyRentalPackageId | null>(null);
@@ -134,6 +135,10 @@ export default function App() {
   }, [activeTab, activeCategorySlug]);
 
   useEffect(() => {
+    if (isBookingOpen) setHasMountedBooking(true);
+  }, [isBookingOpen]);
+
+  useEffect(() => {
     let cancelled = false;
 
     const loadCatalog = async () => {
@@ -145,6 +150,13 @@ export default function App() {
       }
 
       try {
+        const {
+          db,
+          collection,
+          getDocs,
+          testConnection,
+          isOfflineOrNetworkError,
+        } = await import('./lib/firebase');
         const connected = await testConnection();
         if (!connected || cancelled) return;
 
@@ -494,7 +506,9 @@ export default function App() {
         onOpenCategoryPage={handleOpenCategoryPage}
       />
 
-      <BookingModal
+      {hasMountedBooking && (
+        <Suspense fallback={null}>
+          <LazyBookingModal
         isOpen={isBookingOpen}
         onClose={() => setIsBookingOpen(false)}
         services={services}
@@ -517,7 +531,9 @@ export default function App() {
           setActiveTab('my-bookings');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-      />
+          />
+        </Suspense>
+      )}
 
       <WhatsAppFab />
       <OfflineIndicator />
