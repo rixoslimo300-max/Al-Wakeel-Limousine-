@@ -509,7 +509,19 @@ export default function App() {
       />
 
       {hasMountedBooking && (
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            isBookingOpen ? (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1522]/85 backdrop-blur-md text-[#C9A96B] text-sm"
+                role="status"
+                aria-live="polite"
+              >
+                جاري تجهيز نموذج الحجز...
+              </div>
+            ) : null
+          }
+        >
           <LazyBookingModal
         isOpen={isBookingOpen}
         onClose={() => setIsBookingOpen(false)}
