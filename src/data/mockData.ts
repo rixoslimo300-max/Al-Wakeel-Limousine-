@@ -88,24 +88,36 @@ export const initialVehicles: Vehicle[] = [
     nameAr: 'SUV بريميوم (Premium SUV)',
     nameEn: 'Premium SUV',
     category: 'suv',
-    passengers: 3,
+    passengers: 6,
     luggage: 4,
-    descriptionAr: 'ارتقِ بتجربة انتقالك مع سيارة SUV خاصة توفر مساحة أرحب وراحة أكبر وخصوصية كاملة، لتصل إلى وجهتك بتجربة أكثر تميزًا.',
-    descriptionEn: 'Elevated SUV executive comfort for up to 3 passengers.',
+    descriptionAr: 'ارتقِ بتجربة انتقالك مع سيارة SUV خاصة (Soueast S07 / Kia Sportage 2027) مناسبة لـ 1–4 ركاب بالأمتعة أو 5–6 ركاب بدون حقائب.',
+    descriptionEn: 'Elevated SUV executive comfort (Soueast S07 / Kia Sportage 2027) for up to 4 passengers with luggage or 5-6 without luggage.',
     imageUrl: '',
-    features: ['رحابة أكبر للأمتعة', 'تحكم مناخي مستقل', 'عزل صوتي متطور', 'حتى 3 ركاب']
+    features: ['رحابة أكبر للأمتعة', 'تحكم مناخي مستقل', 'عزل صوتي متطور', 'حتى 4 حقائب']
+  },
+  {
+    id: 'premium-minivan',
+    nameAr: 'ميني فان بريميوم (Premium Mini Van)',
+    nameEn: 'Premium Mini Van',
+    category: 'van',
+    passengers: 4,
+    luggage: 5,
+    descriptionAr: 'فئة ميني فان بريميوم مستقلة فاخرة (Kia Carnival 2027) متاحة عند الطلب حتى 4 ركاب و5 حقائب كحد أقصى.',
+    descriptionEn: 'Independent Luxury Premium Mini Van (Kia Carnival 2027) available on request for up to 4 passengers and 5 bags.',
+    imageUrl: '',
+    features: ['1–4 ركاب كحد أقصى', 'حتى 5 حقائب كحد أقصى', 'فئة مستقلة فاخرة', 'السعر بعد المراجعة']
   },
   {
     id: 'family-van',
     nameAr: 'ميني فان (Mini Van)',
     nameEn: 'Mini Van',
     category: 'van',
-    passengers: 5,
-    luggage: 5,
-    descriptionAr: 'مساحة مناسبة للرحلات التي تضم من 4 إلى 5 ركاب، مع توفير السيارة المناسبة لاحتياجات المجموعة.',
-    descriptionEn: 'Dedicated space for groups of 4 to 5 passengers.',
+    passengers: 10,
+    luggage: 7,
+    descriptionAr: 'فئة عائلية وجماعية رحبة تُخصَّص تلقائيًا عند وجود 5 حقائب فأكثر أو أكثر من 4 ركاب مع أمتعة أو 7–10 ركاب.',
+    descriptionEn: 'Dedicated group and luggage capacity (Mitsubishi Xpander 2027 / Toyota Hiace M55 2027) for up to 10 passengers.',
     imageUrl: '',
-    features: ['مخصصة لـ 4–5 ركاب', 'مساحة واسعة للأمتعة', 'تكييف خلفي مستقل', 'تنسيق خاص']
+    features: ['حتى 10 ركاب', 'مساحة كبيرة للأمتعة', 'تكييف خلفي مستقل', 'تخصيص تلقائي']
   }
 ];
 

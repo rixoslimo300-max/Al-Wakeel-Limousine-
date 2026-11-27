@@ -161,7 +161,7 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({
                 <button
                   type="button"
                   onClick={onOpenBooking}
-                  className="w-full min-h-[48px] px-6 py-3 rounded-xl bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold text-sm sm:text-base shadow-lg shadow-black/25 transition-all active:scale-[0.98]"
+                  className="w-full min-h-[48px] px-6 py-3 rounded-xl bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold text-sm sm:text-base shadow-lg shadow-black/25 transition-all active:scale-[0.98] animate-pulse-gold"
                 >
                   احجز رحلتك الآن
                 </button>

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInAnonymously, signInWithPopup, signOut } from 'firebase/auth';
 import {
   getFirestore,
   initializeFirestore,
@@ -19,18 +19,24 @@ import {
   onSnapshot,
   enableNetwork,
   disableNetwork,
+  setLogLevel,
   type Firestore
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 
+// Prevent @firebase/firestore internal SDK retry/WebChannel transport logs from
+// surfacing as uncaught console errors; application-level errors are still
+// logged and thrown via handleFirestoreError().
+setLogLevel('silent');
+
 function createFirestoreInstance(): Firestore {
   try {
     return initializeFirestore(
       app,
       {
-        experimentalAutoDetectLongPolling: true,
+        experimentalForceLongPolling: true,
         localCache: persistentLocalCache({
           tabManager: persistentMultipleTabManager()
         })
@@ -78,6 +84,7 @@ export function isOfflineOrNetworkError(error: unknown): boolean {
   return (
     code === 'unavailable' ||
     code === 'auth/network-request-failed' ||
+    msg.includes('unavailable') ||
     msg.includes('offline') ||
     msg.includes('network-request-failed') ||
     msg.includes('could not reach cloud firestore') ||
@@ -132,6 +139,7 @@ export async function testConnection(): Promise<boolean> {
     return true;
   } catch (error) {
     if (isOfflineOrNetworkError(error)) {
+      disableNetwork(db).catch(() => {});
       console.warn('Firestore operating in offline cache mode:', error instanceof Error ? error.message : error);
       return false;
     }
@@ -140,6 +148,7 @@ export async function testConnection(): Promise<boolean> {
 }
 
 export {
+  signInAnonymously,
   signInWithPopup,
   signOut,
   collection,

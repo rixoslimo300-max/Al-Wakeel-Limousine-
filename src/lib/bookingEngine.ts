@@ -33,15 +33,15 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
   },
   suv_premium: {
     key: 'suv_premium',
-    code: 'PREMIUM SUV',
-    titleAr: 'SUV بريميوم',
-    titleEn: 'Premium SUV',
-    fullLabelAr: 'Premium SUV — SUV بريميوم',
+    code: 'PREMIUM',
+    titleAr: 'بريميوم',
+    titleEn: 'Premium',
+    fullLabelAr: 'Premium — بريميوم',
     descriptionAr:
-      'ارتقِ بتجربة انتقالك مع سيارة SUV خاصة توفر مساحة أرحب وراحة أكبر وخصوصية كاملة، لتصل إلى وجهتك بتجربة أكثر تميزًا.',
+      'مستوى أعلى من الخصوصية والحضور والتجربة مع مساحة أرحب للركاب والأمتعة، لتصل إلى وجهتك براحة وتميز.',
     legacyVehicleCategoryId: 'vip-suv',
     minPassengers: 1,
-    maxPassengers: 3,
+    maxPassengers: 6,
   },
   mini_van: {
     key: 'mini_van',
@@ -50,10 +50,22 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Mini Van',
     fullLabelAr: 'MINI VAN — ميني فان',
     descriptionAr:
-      'مساحة مناسبة للرحلات التي تضم من 4 إلى 5 ركاب، مع توفير السيارة المناسبة لاحتياجات المجموعة.',
+      'فئة عائلية وجماعية رحبة تُخصَّص تلقائيًا عند الحاجة إلى استيعاب أمتعة أكبر (5 حقائب فأكثر) أو مجموعات حتى 10 ركاب.',
     legacyVehicleCategoryId: 'family-van',
-    minPassengers: 4,
-    maxPassengers: 5,
+    minPassengers: 1,
+    maxPassengers: 10,
+  },
+  mini_van_premium: {
+    key: 'mini_van_premium',
+    code: 'PREMIUM MINI VAN',
+    titleAr: 'ميني فان بريميوم',
+    titleEn: 'Premium Mini Van',
+    fullLabelAr: 'Premium Mini Van — ميني فان بريميوم',
+    descriptionAr:
+      'فئة ميني فان بريميوم مستقلة فاخرة متاحة عند الطلب حتى 4 ركاب و5 حقائب كحد أقصى — السعر بعد مراجعة تفاصيل الرحلة.',
+    legacyVehicleCategoryId: 'premium-minivan',
+    minPassengers: 1,
+    maxPassengers: 4,
   },
 };
 
@@ -129,19 +141,20 @@ export function getDailyRentalPackage(packageId?: string | null): DailyRentalPac
  */
 export const INTERNAL_ASSIGNMENT_POOLS: Record<ServiceCategoryKey, string[]> = {
   sedan_comfort: [
-    'Hyundai Elantra CN7',
-    'Toyota Corolla',
-    'Kia Grand Cerato',
+    'Hyundai Elantra CN7 2027',
+    'Toyota Corolla 2027',
+    'Kia Grand Cerato 2027',
   ],
   suv_premium: [
-    'SOUEAST S07',
-    'JETOUR X70',
-    'Hyundai Tucson 2026',
-    'Kia Sportage 2026',
+    'Soueast S07 2027',
+    'Kia Sportage 2027',
   ],
   mini_van: [
-    'مركبة ميني فان معتمدة (تشغيلية - 7 مقاعد)',
-    'تويوتا هاي إيس / ميني فان معتمدة',
+    'Mitsubishi Xpander 2027',
+    'Toyota Hiace M55 2027',
+  ],
+  mini_van_premium: [
+    'Kia Carnival 2027',
   ],
 };
 
@@ -257,24 +270,362 @@ export function normalizeLocationKey(raw: string): string {
   return cleaned;
 }
 
-export function getAllowedCategoriesForPassengers(passengersCount: number): ServiceCategoryKey[] {
+export const QUOTE_REVIEW_MESSAGE_AR = 'السعر بعد مراجعة تفاصيل الرحلة';
+
+export const VEHICLE_ALLOCATION_DISCLAIMER_AR =
+  'الصورة التمثيلية لا تمثل تعهدًا بتخصيص السيارة نفسها للعميل، بل تمثل الفئة المخصصة فقط، وتحتفظ الشركة بحق تخصيص السيارة الفعلية المتاحة من الفئة نفسها عند تأكيد الحجز وتنفيذ الرحلة.';
+
+export type MatrixVehicleId = 'soueast-s07' | 'mitsubishi-xpander' | 'toyota-hiace-m55';
+export type RepresentativeVehicleId = MatrixVehicleId | 'hyundai-elantra-cn7' | 'kia-carnival';
+
+export interface VehicleAllocationResult {
+  passengersCount: number;
+  luggageCount: number;
+  matchedRuleNumber: 1 | 2 | 3 | 4 | 5 | 6;
+  matrixVehicleId: MatrixVehicleId;
+  representativeVehicleId: RepresentativeVehicleId;
+  representativeModelNameAr: string;
+  representativeModelNameEn: string;
+  representativeColorAr: 'أسود' | 'أبيض لؤلؤي' | 'فيراني (رمادي معدني)';
+  effectiveCategory: ServiceCategoryKey;
+  allowedCategories: ServiceCategoryKey[];
+  sedanEligible: boolean;
+  premiumMiniVanEligible: boolean;
+  forcedMiniVan: boolean;
+  forcedMiniVanByLuggage: boolean;
+  forcedMiniVanByPassengers: boolean;
+  exceedsStandardVehicles: boolean;
+  requiresAdminVehicleReview: boolean;
+  noticeAr: string | null;
+  disclaimerAr: string;
+}
+
+const MATRIX_VEHICLE_META: Record<
+  RepresentativeVehicleId,
+  { nameAr: string; nameEn: string; colorAr: 'أسود' | 'أبيض لؤلؤي' | 'فيراني (رمادي معدني)' }
+> = {
+  'soueast-s07': { nameAr: 'سوايست S07 2027', nameEn: 'Soueast S07 2027', colorAr: 'أسود' },
+  'mitsubishi-xpander': {
+    nameAr: 'ميتسوبيشي إكسباندر 2027',
+    nameEn: 'Mitsubishi Xpander 2027',
+    colorAr: 'فيراني (رمادي معدني)',
+  },
+  'toyota-hiace-m55': {
+    nameAr: 'تويوتا هاي إيس M55 2027',
+    nameEn: 'Toyota Hiace M55 2027',
+    colorAr: 'أبيض لؤلؤي',
+  },
+  'hyundai-elantra-cn7': {
+    nameAr: 'سيدان مريحة 2027',
+    nameEn: 'Comfort Sedan 2027',
+    colorAr: 'فيراني (رمادي معدني)',
+  },
+  'kia-carnival': {
+    nameAr: 'كيا كارنيفال 2027',
+    nameEn: 'Kia Carnival 2027',
+    colorAr: 'أسود',
+  },
+};
+
+/**
+ * Unified central vehicle allocation matrix (Strict Priority Order 1 -> 6)
+ * plus independent Premium Mini Van (Kia Carnival 2027) hard-gated strictly at <= 4 pax AND <= 5 bags.
+ */
+export function allocateVehicleForTrip(params: {
+  passengersCount: number;
+  luggageCount: number;
+  preferredCategory?: ServiceCategoryKey | null;
+}): VehicleAllocationResult {
+  const pax =
+    Number.isInteger(params.passengersCount) && params.passengersCount >= 1
+      ? params.passengersCount
+      : 1;
+  const bags =
+    Number.isInteger(params.luggageCount) && params.luggageCount >= 0 ? params.luggageCount : 0;
+
+  let matchedRuleNumber: 1 | 2 | 3 | 4 | 5 | 6;
+  let matrixVehicleId: MatrixVehicleId;
+  let matrixCategory: ServiceCategoryKey;
+
+  // Strict Basic Priority Order (UNCHANGED):
+  if (bags > 5) {
+    // 1. luggageCount > 5 -> Toyota Hiace M55 (Pearl White)
+    matchedRuleNumber = 1;
+    matrixVehicleId = 'toyota-hiace-m55';
+    matrixCategory = 'mini_van';
+  } else if (pax > 4 && bags >= 1) {
+    // 2. passengersCount > 4 && luggageCount >= 1 -> Toyota Hiace M55 (Pearl White)
+    matchedRuleNumber = 2;
+    matrixVehicleId = 'toyota-hiace-m55';
+    matrixCategory = 'mini_van';
+  } else if (pax > 6) {
+    // 3. passengersCount > 6 -> Toyota Hiace M55 (Pearl White)
+    matchedRuleNumber = 3;
+    matrixVehicleId = 'toyota-hiace-m55';
+    matrixCategory = 'mini_van';
+  } else if (bags === 5 && pax <= 4) {
+    // 4. luggageCount === 5 && passengersCount <= 4 -> Mitsubishi Xpander (Metallic Grey)
+    matchedRuleNumber = 4;
+    matrixVehicleId = 'mitsubishi-xpander';
+    matrixCategory = 'mini_van';
+  } else if (bags <= 4 && pax <= 4) {
+    // 5. luggageCount <= 4 && passengersCount <= 4 -> Soueast S07 (Black)
+    matchedRuleNumber = 5;
+    matrixVehicleId = 'soueast-s07';
+    matrixCategory = 'suv_premium';
+  } else {
+    // 6. passengersCount 5..6 && luggageCount === 0 -> Soueast S07 (Black)
+    matchedRuleNumber = 6;
+    matrixVehicleId = 'soueast-s07';
+    matrixCategory = 'suv_premium';
+  }
+
+  // Comfort Sedan is eligible ONLY when 1..3 pax AND 0..2 bags.
+  const sedanEligible = pax <= 3 && bags <= 2 && matrixCategory !== 'mini_van';
+
+  // Premium Mini Van (Kia Carnival 2027) is an independent category strictly eligible ONLY when 1..4 pax AND 0..5 bags.
+  // Any case with passengersCount >= 5 OR luggageCount >= 6 is strictly INELIGIBLE.
+  const premiumMiniVanEligible = pax >= 1 && pax <= 4 && bags >= 0 && bags <= 5;
+
+  const allowedCategories: ServiceCategoryKey[] = [matrixCategory];
+  if (sedanEligible && !allowedCategories.includes('sedan_comfort')) {
+    allowedCategories.push('sedan_comfort');
+  }
+  if (premiumMiniVanEligible && !allowedCategories.includes('mini_van_premium')) {
+    allowedCategories.push('mini_van_premium');
+  }
+
+  // Apply preferred category only if capacity allows it; Carnival never replaces Xpander/Hiace/S07 automatically.
+  let effectiveCategory: ServiceCategoryKey = matrixCategory;
+  if (params.preferredCategory && allowedCategories.includes(params.preferredCategory)) {
+    effectiveCategory = params.preferredCategory;
+  } else if (!params.preferredCategory && sedanEligible) {
+    effectiveCategory = 'sedan_comfort';
+  }
+
+  const representativeVehicleId: RepresentativeVehicleId =
+    effectiveCategory === 'mini_van_premium'
+      ? 'kia-carnival'
+      : effectiveCategory === 'sedan_comfort'
+        ? 'hyundai-elantra-cn7'
+        : matrixVehicleId;
+
+  const meta = MATRIX_VEHICLE_META[representativeVehicleId];
+
+  const forcedMiniVan = matrixCategory === 'mini_van';
+  const forcedMiniVanByLuggage = matchedRuleNumber === 1 || matchedRuleNumber === 4;
+  const forcedMiniVanByPassengers = matchedRuleNumber === 2 || matchedRuleNumber === 3;
+  const exceedsStandardVehicles = pax > 10;
+
+  let noticeAr: string | null = null;
+  if (params.preferredCategory === 'mini_van_premium' && !premiumMiniVanEligible) {
+    if (pax > 4 && bags > 5) {
+      noticeAr =
+        'فئة ميني فان بريميوم متاحة لـ 1 إلى 4 ركاب و5 حقائب كحد أقصى؛ لتجاوز السعة المحددة تم التحويل تلقائيًا إلى Toyota Hiace M55.';
+    } else if (pax > 4) {
+      noticeAr =
+        matchedRuleNumber === 6
+          ? 'فئة ميني فان بريميوم غير متاحة عند 5 ركاب فأكثر (الحد الأقصى 4 ركاب)؛ تم التحويل تلقائيًا إلى Soueast S07 المناسبة.'
+          : 'فئة ميني فان بريميوم غير متاحة عند 5 ركاب فأكثر (الحد الأقصى 4 ركاب)؛ تم التحويل تلقائيًا إلى Toyota Hiace M55 المناسبة.';
+    } else {
+      noticeAr =
+        'فئة ميني فان بريميوم غير متاحة لأكثر من 5 حقائب؛ تم التحويل تلقائيًا إلى فئة ميني فان (Toyota Hiace M55).';
+    }
+  } else if (matchedRuleNumber === 1) {
+    noticeAr =
+      'لتجاوز عدد الحقائب 5 حقائب، تم تخصيص فئة ميني فان (Toyota Hiace M55) تلقائيًا لاستيعاب الأمتعة والركاب.';
+  } else if (matchedRuleNumber === 2) {
+    noticeAr =
+      'لوجود أكثر من 4 ركاب مع حقائب، تم تخصيص فئة ميني فان (Toyota Hiace M55) تلقائيًا لضمان السعة المناسبة.';
+  } else if (matchedRuleNumber === 3) {
+    noticeAr = exceedsStandardVehicles
+      ? 'لتجاوز 6 ركاب، تم تخصيص فئة ميني فان (Toyota Hiace M55) وسيتم مراجعة ترتيبات المجموعة مع الإدارة.'
+      : 'لوجود 7 إلى 10 ركاب، تم تخصيص فئة ميني فان (Toyota Hiace M55) تلقائيًا.';
+  } else if (matchedRuleNumber === 4 && effectiveCategory !== 'mini_van_premium') {
+    noticeAr =
+      'لوجود 5 حقائب مع حتى 4 ركاب، تم تخصيص فئة ميني فان (Mitsubishi Xpander) تلقائيًا، ويمكنك اختيار «ميني فان بريميوم» المستقلة عند الرغبة.';
+  } else if (params.preferredCategory === 'sedan_comfort' && !sedanEligible) {
+    noticeAr =
+      'نظرًا لعدد الركاب أو الحقائب، تم التحديث تلقائيًا إلى فئة بريميوم (Soueast S07) المناسبة للسعة.';
+  }
+
+  return {
+    passengersCount: pax,
+    luggageCount: bags,
+    matchedRuleNumber,
+    matrixVehicleId,
+    representativeVehicleId,
+    representativeModelNameAr: meta.nameAr,
+    representativeModelNameEn: meta.nameEn,
+    representativeColorAr: meta.colorAr,
+    effectiveCategory,
+    allowedCategories,
+    sedanEligible,
+    premiumMiniVanEligible,
+    forcedMiniVan,
+    forcedMiniVanByLuggage,
+    forcedMiniVanByPassengers,
+    exceedsStandardVehicles,
+    requiresAdminVehicleReview:
+      effectiveCategory === 'mini_van' ||
+      effectiveCategory === 'mini_van_premium' ||
+      exceedsStandardVehicles,
+    noticeAr,
+    disclaimerAr: VEHICLE_ALLOCATION_DISCLAIMER_AR,
+  };
+}
+
+/**
+ * Calculates the representative vehicle and allowed service categories using the unified priority matrix:
+ * 1. luggageCount > 5 -> Toyota Hiace M55
+ * 2. passengersCount > 4 && luggageCount >= 1 -> Toyota Hiace M55
+ * 3. passengersCount > 6 -> Toyota Hiace M55
+ * 4. luggageCount === 5 && passengersCount <= 4 -> Mitsubishi Xpander (or Kia Carnival when mini_van_premium is selected)
+ * 5. luggageCount <= 4 && passengersCount <= 4 -> Soueast S07 (sedan_comfort eligible up to 3 pax & 2 bags; Kia Carnival eligible up to 4 pax & 5 bags)
+ * 6. passengersCount 5..6 && luggageCount === 0 -> Soueast S07 (Kia Carnival strictly ineligible)
+ */
+export function calculateRepresentativeVehicle(params: {
+  passengersCount: number;
+  luggageCount: number;
+  preferredCategory?: ServiceCategoryKey | null;
+}): VehicleAllocationResult;
+export function calculateRepresentativeVehicle(
+  passengersCount: number,
+  luggageCount: number,
+  preferredCategory?: ServiceCategoryKey | null
+): VehicleAllocationResult;
+export function calculateRepresentativeVehicle(
+  paramsOrPassengers:
+    | {
+        passengersCount: number;
+        luggageCount: number;
+        preferredCategory?: ServiceCategoryKey | null;
+      }
+    | number,
+  luggageCountArg?: number,
+  preferredCategoryArg?: ServiceCategoryKey | null
+): VehicleAllocationResult {
+  if (typeof paramsOrPassengers === 'number') {
+    return allocateVehicleForTrip({
+      passengersCount: paramsOrPassengers,
+      luggageCount: luggageCountArg ?? 0,
+      preferredCategory: preferredCategoryArg ?? null,
+    });
+  }
+  return allocateVehicleForTrip(paramsOrPassengers);
+}
+
+export interface CapacityEvaluationResult {
+  allowedCategories: ServiceCategoryKey[];
+  effectiveCategory: ServiceCategoryKey;
+  allocation: VehicleAllocationResult;
+  forcedMiniVanByLuggage: boolean;
+  forcedMiniVanByPassengers: boolean;
+  exceedsMaxCapacity: boolean;
+  requiresAdminVehicleReview: boolean;
+  noticeAr: string | null;
+  categorySpecs: Record<
+    ServiceCategoryKey,
+    {
+      allowed: boolean;
+      disabledReasonAr: string | null;
+      maxPassengers: number;
+      maxLuggage: number;
+    }
+  >;
+}
+
+export function getAllowedCategoriesForPassengers(
+  passengersCount: number,
+  luggageCount: number = 0
+): ServiceCategoryKey[] {
   if (!Number.isInteger(passengersCount) || passengersCount < 1) {
     return [];
   }
-  if (passengersCount <= 3) {
-    return ['sedan_comfort', 'suv_premium'];
-  }
-  if (passengersCount <= 5) {
-    return ['mini_van'];
-  }
-  return [];
+  const bags = Number.isInteger(luggageCount) && luggageCount >= 0 ? luggageCount : 0;
+  return allocateVehicleForTrip({ passengersCount, luggageCount: bags }).allowedCategories;
 }
 
-export function getDefaultCategoryForPassengers(passengersCount: number): ServiceCategoryKey | null {
-  if (!Number.isInteger(passengersCount) || passengersCount < 1 || passengersCount > 5) {
+export function getDefaultCategoryForPassengers(
+  passengersCount: number,
+  luggageCount: number = 0
+): ServiceCategoryKey | null {
+  if (!Number.isInteger(passengersCount) || passengersCount < 1) {
     return null;
   }
-  return passengersCount <= 3 ? 'sedan_comfort' : 'mini_van';
+  const bags = Number.isInteger(luggageCount) && luggageCount >= 0 ? luggageCount : 0;
+  return allocateVehicleForTrip({ passengersCount, luggageCount: bags }).effectiveCategory;
+}
+
+export function evaluateVehicleCapacity(params: {
+  passengersCount: number;
+  luggageCount: number;
+  preferredCategory?: ServiceCategoryKey | null;
+}): CapacityEvaluationResult {
+  const allocation = allocateVehicleForTrip(params);
+  const pax = allocation.passengersCount;
+  const bags = allocation.luggageCount;
+
+  const sedanDisabledReason = allocation.forcedMiniVan
+    ? 'غير متاحة لهذه السعة؛ تم تخصيص فئة ميني فان المناسبة تلقائيًا.'
+    : pax > 3
+      ? 'سعة السيدان المريحة لا تتجاوز 3 ركاب.'
+      : bags > 2
+        ? 'سعة السيدان المريحة لا تتجاوز حقيبتين.'
+        : null;
+
+  const suvDisabledReason = allocation.forcedMiniVan
+    ? 'تتطلب السعة الحالية مركبة أكبر من فئة ميني فان.'
+    : null;
+
+  const miniVanDisabledReason =
+    allocation.allowedCategories.includes('mini_van')
+      ? null
+      : 'تظهر تلقائيًا فقط عند تجاوز سعة السيدان وSUV.';
+
+  const miniVanPremiumDisabledReason =
+    allocation.allowedCategories.includes('mini_van_premium')
+      ? null
+      : pax > 4
+        ? 'الحد الأقصى لفئة ميني فان بريميوم هو 4 ركاب فقط.'
+        : 'الحد الأقصى لفئة ميني فان بريميوم هو 5 حقائب فقط.';
+
+  return {
+    allowedCategories: allocation.allowedCategories,
+    effectiveCategory: allocation.effectiveCategory,
+    allocation,
+    forcedMiniVanByLuggage: allocation.forcedMiniVanByLuggage,
+    forcedMiniVanByPassengers: allocation.forcedMiniVanByPassengers,
+    exceedsMaxCapacity: allocation.exceedsStandardVehicles,
+    requiresAdminVehicleReview: allocation.requiresAdminVehicleReview,
+    noticeAr: allocation.noticeAr,
+    categorySpecs: {
+      sedan_comfort: {
+        allowed: allocation.allowedCategories.includes('sedan_comfort'),
+        disabledReasonAr: sedanDisabledReason,
+        maxPassengers: 3,
+        maxLuggage: 2,
+      },
+      suv_premium: {
+        allowed: allocation.allowedCategories.includes('suv_premium'),
+        disabledReasonAr: suvDisabledReason,
+        maxPassengers: 6,
+        maxLuggage: 4,
+      },
+      mini_van: {
+        allowed: allocation.allowedCategories.includes('mini_van'),
+        disabledReasonAr: miniVanDisabledReason,
+        maxPassengers: 10,
+        maxLuggage: 7,
+      },
+      mini_van_premium: {
+        allowed: allocation.allowedCategories.includes('mini_van_premium'),
+        disabledReasonAr: miniVanPremiumDisabledReason,
+        maxPassengers: 4,
+        maxLuggage: 5,
+      },
+    },
+  };
 }
 
 export function extractStructuredRouteRules(rules: PricingRule[]): PricingRule[] {
@@ -291,7 +642,14 @@ export interface TripQuoteResult {
   valid: boolean;
   requiresSpecialArrangement: boolean;
   requiresCustomQuote: boolean;
-  quoteReason?: 'minivan_unconfigured' | 'unlisted_route' | 'invalid_passengers' | 'same_location' | 'category_mismatch';
+  quoteReason?:
+    | 'minivan_unconfigured'
+    | 'minivan_premium_unconfigured'
+    | 'unlisted_route'
+    | 'invalid_passengers'
+    | 'same_location'
+    | 'category_mismatch'
+    | 'missing_route';
   fixedPrice: number | null;
   matchedRuleId?: string;
   matchedRouteName?: string;
@@ -302,10 +660,20 @@ export function calculateTripQuote(params: {
   origin: string;
   destination: string;
   passengersCount: number;
+  luggageCount?: number;
   serviceCategory: ServiceCategoryKey | null;
   pricingRules: PricingRule[];
 }): TripQuoteResult {
-  const { origin, destination, passengersCount, serviceCategory, pricingRules } = params;
+  const {
+    origin,
+    destination,
+    passengersCount,
+    luggageCount = 0,
+    serviceCategory,
+    pricingRules,
+  } = params;
+
+  const bags = Number.isInteger(luggageCount) && luggageCount >= 0 ? luggageCount : 0;
 
   if (!Number.isInteger(passengersCount) || passengersCount < 1) {
     return {
@@ -318,33 +686,50 @@ export function calculateTripQuote(params: {
     };
   }
 
-  if (passengersCount > 5) {
+  const allocation = allocateVehicleForTrip({
+    passengersCount,
+    luggageCount: bags,
+    preferredCategory: serviceCategory,
+  });
+
+  if (allocation.exceedsStandardVehicles) {
     return {
-      valid: false,
+      valid: true,
       requiresSpecialArrangement: true,
-      requiresCustomQuote: false,
+      requiresCustomQuote: true,
       quoteReason: 'invalid_passengers',
       fixedPrice: null,
-      messageAr: 'للرحلات التي تضم أكثر من 5 ركاب، يرجى التواصل معنا مباشرة لتنسيق الترتيب الخاص المناسب.',
+      messageAr: QUOTE_REVIEW_MESSAGE_AR,
     };
   }
 
   const originKey = normalizeLocationKey(origin);
   const destKey = normalizeLocationKey(destination);
 
-  if (originKey && destKey && originKey === destKey) {
+  if (!originKey || !destKey) {
+    return {
+      valid: false,
+      requiresSpecialArrangement: false,
+      requiresCustomQuote: true,
+      quoteReason: 'missing_route',
+      fixedPrice: null,
+      messageAr: QUOTE_REVIEW_MESSAGE_AR,
+    };
+  }
+
+  if (originKey === destKey) {
     return {
       valid: false,
       requiresSpecialArrangement: false,
       requiresCustomQuote: false,
       quoteReason: 'same_location',
       fixedPrice: null,
-      messageAr: 'لا يمكن أن تكون نقطة الانطلاق والوجهة المقصودة متطابقتين.',
+      messageAr: 'لا يمكن أن تكون نقطة التحرك والوجهة متطابقتين.',
     };
   }
 
-  const allowedCategories = getAllowedCategoriesForPassengers(passengersCount);
-  if (!serviceCategory || !allowedCategories.includes(serviceCategory)) {
+  const resolvedCategory = serviceCategory ?? allocation.effectiveCategory;
+  if (!allocation.allowedCategories.includes(resolvedCategory)) {
     return {
       valid: false,
       requiresSpecialArrangement: false,
@@ -352,9 +737,7 @@ export function calculateTripQuote(params: {
       quoteReason: 'category_mismatch',
       fixedPrice: null,
       messageAr:
-        passengersCount <= 3
-          ? 'تتوفر فئات Comfort Sedan وPremium SUV لعدد 1 إلى 3 ركاب.'
-          : 'فئة ميني فان إلزامية لعدد 4 إلى 5 ركاب.',
+        allocation.noticeAr || 'يرجى اعتماد فئة الخدمة المتوافقة مع عدد الركاب والأمتعة.',
     };
   }
 
@@ -378,23 +761,31 @@ export function calculateTripQuote(params: {
       requiresCustomQuote: true,
       quoteReason: 'unlisted_route',
       fixedPrice: null,
-      messageAr: UNLISTED_ROUTE_QUOTE_MESSAGE_AR,
+      messageAr: QUOTE_REVIEW_MESSAGE_AR,
     };
   }
 
   let priceForCategory: number | null = null;
-  if (serviceCategory === 'sedan_comfort') {
-    priceForCategory = typeof matchedRule.sedanPrice === 'number' && matchedRule.sedanPrice > 0
-      ? matchedRule.sedanPrice
-      : null;
-  } else if (serviceCategory === 'suv_premium') {
-    priceForCategory = typeof matchedRule.suvPrice === 'number' && matchedRule.suvPrice > 0
-      ? matchedRule.suvPrice
-      : null;
-  } else if (serviceCategory === 'mini_van') {
-    priceForCategory = typeof matchedRule.miniVanPrice === 'number' && matchedRule.miniVanPrice > 0
-      ? matchedRule.miniVanPrice
-      : null;
+  if (resolvedCategory === 'sedan_comfort') {
+    priceForCategory =
+      typeof matchedRule.sedanPrice === 'number' && matchedRule.sedanPrice > 0
+        ? matchedRule.sedanPrice
+        : null;
+  } else if (resolvedCategory === 'suv_premium') {
+    priceForCategory =
+      typeof matchedRule.suvPrice === 'number' && matchedRule.suvPrice > 0
+        ? matchedRule.suvPrice
+        : null;
+  } else if (resolvedCategory === 'mini_van') {
+    priceForCategory =
+      typeof matchedRule.miniVanPrice === 'number' && matchedRule.miniVanPrice > 0
+        ? matchedRule.miniVanPrice
+        : null;
+  } else if (resolvedCategory === 'mini_van_premium') {
+    priceForCategory =
+      typeof matchedRule.miniVanPremiumPrice === 'number' && matchedRule.miniVanPremiumPrice > 0
+        ? matchedRule.miniVanPremiumPrice
+        : null;
   }
 
   if (priceForCategory === null) {
@@ -402,14 +793,16 @@ export function calculateTripQuote(params: {
       valid: true,
       requiresSpecialArrangement: false,
       requiresCustomQuote: true,
-      quoteReason: serviceCategory === 'mini_van' ? 'minivan_unconfigured' : 'unlisted_route',
+      quoteReason:
+        resolvedCategory === 'mini_van_premium'
+          ? 'minivan_premium_unconfigured'
+          : resolvedCategory === 'mini_van'
+            ? 'minivan_unconfigured'
+            : 'unlisted_route',
       fixedPrice: null,
       matchedRuleId: matchedRule.id,
       matchedRouteName: matchedRule.routeName,
-      messageAr:
-        serviceCategory === 'mini_van'
-          ? 'فئة ميني فان غير مفعلة للتسعير التلقائي حالياً. يرجى التواصل معنا للحصول على عرض سعر خاص.'
-          : UNLISTED_ROUTE_QUOTE_MESSAGE_AR,
+      messageAr: QUOTE_REVIEW_MESSAGE_AR,
     };
   }
 

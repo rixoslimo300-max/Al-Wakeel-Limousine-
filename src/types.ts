@@ -1,4 +1,8 @@
-export type ServiceCategoryKey = 'sedan_comfort' | 'suv_premium' | 'mini_van';
+export type ServiceCategoryKey =
+  | 'sedan_comfort'
+  | 'suv_premium'
+  | 'mini_van'
+  | 'mini_van_premium';
 
 export interface Service {
   id: string;
@@ -38,6 +42,7 @@ export interface PricingRule {
   sedanPrice?: number | null;
   suvPrice?: number | null;
   miniVanPrice?: number | null;
+  miniVanPremiumPrice?: number | null;
   isActive?: boolean;
   bidirectional?: boolean;
 }

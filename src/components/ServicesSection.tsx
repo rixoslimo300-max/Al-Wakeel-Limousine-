@@ -20,8 +20,14 @@ import {
   calculateTripQuote,
   extractStructuredRouteRules,
 } from '../lib/bookingEngine';
-import heroAirportImg from '../assets/images/hero_soueast_s07_clean_1795717054020.jpg';
-import elantraImg from '../assets/images/fleet_elantra_cn7_rep_1795707507931.jpg';
+import soueastSuvImg from '../assets/images/fleet_soueast_s07.webp';
+import elantraBlackImg from '../assets/images/fleet_elantra_cn7.webp';
+
+import {
+  ServiceCategorySlug,
+  CATEGORY_KEY_TO_SLUG,
+  getServiceCategoryPath,
+} from '../data/seoCatalog';
 
 export interface AirportTransferSelection {
   origin: string;
@@ -32,6 +38,7 @@ export interface AirportTransferSelection {
 interface ServicesSectionProps {
   pricingRules: PricingRule[];
   onSelectTransfer: (selection: AirportTransferSelection) => void;
+  onOpenCategoryPage: (slug: ServiceCategorySlug) => void;
 }
 
 interface AirportRouteSpec {
@@ -81,6 +88,7 @@ const WhatsAppGlyph: React.FC<{ className?: string }> = ({ className = 'w-4 h-4'
 export const ServicesSection: React.FC<ServicesSectionProps> = ({
   pricingRules,
   onSelectTransfer,
+  onOpenCategoryPage,
 }) => {
   const effectiveRules = useMemo(
     () => extractStructuredRouteRules(pricingRules.length ? pricingRules : OFFICIAL_ROUTE_PRICING),
@@ -91,16 +99,19 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
     key: 'sedan_comfort' | 'suv_premium';
     image: string;
     alt: string;
+    capacityBadge: string;
   }> = [
     {
       key: 'sedan_comfort',
-      image: elantraImg,
-      alt: 'Comfort Sedan — انتقالات المطارات الخاصة',
+      image: elantraBlackImg,
+      alt: 'فئة سيدان مريحة لانتقالات المطارات الخاصة',
+      capacityBadge: '1–3 ركاب · حتى حقيبتين',
     },
     {
       key: 'suv_premium',
-      image: heroAirportImg,
-      alt: 'Premium SUV — انتقالات المطارات الخاصة',
+      image: soueastSuvImg,
+      alt: 'فئة بريميوم لانتقالات المطارات الخاصة',
+      capacityBadge: 'حتى 4 ركاب بالأمتعة · أو 5–6 بدون حقائب',
     },
   ];
 
@@ -140,28 +151,34 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           {transferCategories.map((item, idx) => {
             const meta = SERVICE_CATEGORIES[item.key];
+            const categorySlug = CATEGORY_KEY_TO_SLUG[item.key];
+            const categoryPath = getServiceCategoryPath(categorySlug);
             return (
               <RevealBlock key={item.key} delayMs={idx * 70} className="h-full">
                 <LuxuryTiltCard
                   enableTilt={false}
-                  className="h-full bg-[#101D2D] border border-[#C9A96B]/25 hover:border-[#C9A96B]/60 rounded-2xl overflow-hidden flex flex-col group"
+                  className="relative cursor-pointer h-full bg-[#101D2D] border border-[#C9A96B]/25 hover:border-[#C9A96B]/70 focus-within:ring-2 focus-within:ring-[#C9A96B]/70 rounded-2xl overflow-hidden flex flex-col group transition-all"
                 >
-                  {/* Clean 16:9 Category Visual — Zero Price Badges Overlaid on Photo */}
+                  {/* Clean 16:9 Category Visual — Covered by the card's accessible stretched link */}
                   <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-[#0B1522]">
                     <img
                       src={item.image}
                       alt={item.alt}
+                      width={960}
+                      height={540}
                       loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
                       className="w-full h-full object-cover object-center opacity-95 group-hover:scale-[1.02] transition-transform duration-500"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#101D2D] to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#101D2D] to-transparent pointer-events-none" />
                   </div>
 
                   {/* Card Body */}
                   <div className="p-5 sm:p-6 lg:p-7 flex-1 flex flex-col justify-between gap-6 text-right">
                     <div className="space-y-4">
                       <div className="space-y-1.5">
-                        <div className="flex items-center justify-between gap-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
                           <span
                             dir="ltr"
                             className="font-latin text-xs font-semibold tracking-[0.14em] uppercase text-[#C9A96B]"
@@ -169,12 +186,21 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                             {meta.titleEn}
                           </span>
                           <span className="font-label text-[#91B9C8]">
-                            انتقال خاص · 1–3 ركاب
+                            {item.capacityBadge}
                           </span>
                         </div>
-                        <h3 className="font-section-heading text-white leading-snug">
-                          {meta.titleAr} — انتقالات المطارات
-                        </h3>
+                        <a
+                          href={categoryPath}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onOpenCategoryPage(categorySlug);
+                          }}
+                          className="block group-hover:text-[#DFC89B] transition-colors focus-visible:outline-none after:absolute after:inset-0 after:z-10"
+                        >
+                          <h3 className="font-section-heading text-white leading-snug group-hover:text-[#DFC89B] transition-colors">
+                            {meta.titleAr} — انتقالات المطارات
+                          </h3>
+                        </a>
                       </div>
 
                       <p className="font-body text-[#9A9A96] leading-relaxed">
@@ -182,7 +208,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                       </p>
 
                       {/* Official Airport Routes & Fixed Prices */}
-                      <div className="pt-2 space-y-2">
+                      <div className="relative z-20 pt-2 space-y-2">
                         <div className="flex items-center justify-between text-xs text-[#91B9C8] pb-1.5 border-b border-[#C9A96B]/15">
                           <span className="flex items-center gap-1.5 font-medium">
                             <ArrowLeftRight className="w-3.5 h-3.5 text-[#C9A96B]" />
@@ -198,13 +224,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                               <button
                                 key={route.id}
                                 type="button"
-                                onClick={() =>
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   onSelectTransfer({
                                     origin: route.origin,
                                     destination: route.destination,
                                     category: item.key,
-                                  })
-                                }
+                                  });
+                                }}
                                 className="w-full py-3 px-2.5 -mx-2.5 rounded-xl hover:bg-[#152438]/90 transition-colors flex items-center justify-between gap-3 text-right"
                               >
                                 <span className="font-sub sm:text-sm text-[#F6F5F1] font-medium">
@@ -220,20 +247,23 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onSelectTransfer({
-                          origin: 'الإسكندرية',
-                          destination: 'مطار برج العرب الدولي',
-                          category: item.key,
-                        })
-                      }
-                      className="w-full min-h-[48px] bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold py-3 px-5 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base whitespace-nowrap"
-                    >
-                      <span>احجز انتقال مطار ({meta.titleEn})</span>
-                      <ArrowUpLeft className="w-4 h-4 shrink-0" />
-                    </button>
+                    <div className="relative z-20">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectTransfer({
+                            origin: 'الإسكندرية',
+                            destination: 'مطار برج العرب الدولي',
+                            category: item.key,
+                          });
+                        }}
+                        className="w-full min-h-[48px] bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold py-3 px-5 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base whitespace-nowrap"
+                      >
+                        <span>احجز انتقال مطار ({meta.titleAr})</span>
+                        <ArrowUpLeft className="w-4 h-4 shrink-0" />
+                      </button>
+                    </div>
                   </div>
                 </LuxuryTiltCard>
               </RevealBlock>

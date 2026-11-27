@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#16273c"/>
+      <stop offset="100%" stop-color="#0a121c"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DFD0B5"/>
+      <stop offset="50%" stop-color="#C9A96B"/>
+      <stop offset="100%" stop-color="#9C7A3C"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)"/>
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#goldGrad)" stroke-width="6" opacity="0.6"/>
+  <circle cx="256" cy="256" r="195" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.4"/>
+  <!-- Diamond Crest -->
+  <polygon points="256,90 390,256 256,422 122,256" fill="none" stroke="url(#goldGrad)" stroke-width="8"/>
+  <polygon points="256,120 360,256 256,392 152,256" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.5"/>
+  <!-- Stylized Al Wakeel W Emblem -->
+  <path d="M 160 210 L 210 330 L 256 250 L 302 330 L 352 210" fill="none" stroke="url(#goldGrad)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Crown Diamond Star -->
+  <polygon points="256,160 268,180 256,200 244,180" fill="url(#goldGrad)"/>
+</svg>

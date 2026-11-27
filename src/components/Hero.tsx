@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import heroSuvImg from '../assets/images/hero_soueast_s07_clean_1795717054020.jpg';
+import heroSuvImg from '../assets/images/hero_soueast_s07.webp';
+import heroSuvSmImg from '../assets/images/hero_soueast_s07_sm.webp';
 
 interface HeroProps {
   onOpenBooking: () => void;
@@ -42,17 +43,25 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
 
   return (
     <section className="relative bg-[#101D2D] text-[#F6F5F1] overflow-hidden">
-      
+
       {/* MOBILE & TABLET COMPOSITION (< lg): Vehicle commands top frame unobstructed, copy sits cleanly below */}
       <div className="lg:hidden">
-        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-[#0B1522]">
-          <img
-            src={heroSuvImg}
-            alt="سيارة الدفع الرباعي السوداء الفاخرة أمام المطار عند الغروب"
-            className={`w-full h-full object-cover object-[66%_52%] sm:object-[62%_50%] transition-all duration-700 ease-out ${
-              heroReady ? 'opacity-100 scale-100' : 'opacity-90 scale-[1.03]'
-            }`}
-          />
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-[#0B1522]">
+          <picture>
+            <source media="(max-width: 1023px)" srcSet={heroSuvSmImg} />
+            <img
+              src={heroSuvImg}
+              alt="سيارة تمثيلية فاخرة لفئة بريميوم أمام المطار عند الغروب"
+              width={800}
+              height={500}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              className={`w-full h-full object-cover object-[66%_52%] sm:object-[62%_50%] transition-all duration-700 ease-out ${
+                heroReady ? 'opacity-100 scale-100' : 'opacity-90 scale-[1.03]'
+              }`}
+            />
+          </picture>
           <div
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#101D2D] via-[#101D2D]/45 to-transparent"
@@ -79,7 +88,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
             <button
               type="button"
               onClick={onOpenBooking}
-              className="w-full sm:w-auto min-h-[48px] bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold px-6 py-3 rounded-xl shadow-lg shadow-black/25 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base"
+              className="w-full sm:w-auto min-h-[48px] bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold px-6 py-3 rounded-xl shadow-lg shadow-black/25 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base animate-pulse-gold"
             >
               <span>احجز رحلتك الآن</span>
               <ArrowLeft className="w-4 h-4 shrink-0" />
@@ -102,13 +111,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
           <img
             ref={imageRef}
             src={heroSuvImg}
-            alt="سيارة الدفع الرباعي السوداء الفاخرة أمام صالة المطار عند الغروب"
+            alt="سيارة تمثيلية فاخرة لفئة بريميوم أمام صالة المطار عند الغروب"
+            width={1440}
+            height={900}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
             className={`w-full h-full object-cover object-[72%_54%] transition-opacity duration-700 ease-out will-change-transform ${
               heroReady ? 'opacity-100' : 'opacity-85'
             }`}
             style={{ transform: 'translate3d(0, 0, 0) scale(1.03)' }}
           />
-          {/* Subtle contrast scrim strictly on the physical left edge so the SUV center-right remains crystal clear */}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-gradient-to-r from-[#101D2D]/95 via-[#101D2D]/55 via-35% to-transparent to-62%"
@@ -119,7 +132,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
           />
         </div>
 
-        {/* In dir="rtl", justify-end places the single text block on the physical LEFT side */}
         <div className="relative z-10 max-w-7xl mx-auto w-full px-8 py-20 flex justify-end">
           <div
             className={`w-full max-w-[430px] xl:max-w-[465px] text-right space-y-5 transition-all duration-700 ease-out ${

@@ -3,43 +3,133 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101D2D" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="الوكيل" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
     <title>Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر</title>
-    <meta name="description" content="الوكيل لخدمات الليموزين منذ عام 2014 – خدمات تنقل خاصة من الإسكندرية (رشدي – ستانلي) إلى مطار برج العرب ومطار القاهرة والساحل الشمالي. تواصل: +201000053774." />
-    <meta property="og:title" content="Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر" />
-    <meta property="og:description" content="الوكيل لخدمات الليموزين منذ عام 2014 – خدمات تنقل خاصة من الإسكندرية (رشدي – ستانلي) إلى المطارات والمدن والوجهات السياحية." />
+    <meta
+      name="description"
+      content="الوكيل لخدمات الليموزين منذ عام 2014 – خدمات تنقل خاصة من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي بفئات خدمة تناسب احتياجك."
+    />
+    <link rel="canonical" href="https://wakeellimousine.com/" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_EG" />
+    <meta property="og:site_name" content="Al Wakeel Limousine" />
+    <meta property="og:title" content="Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر" />
+    <meta
+      property="og:description"
+      content="تنقل خاص بخصوصية كاملة من الإسكندرية إلى المطارات والمدن والوجهات السياحية منذ عام 2014. اختر فئة الخدمة المناسبة لرحلتك."
+    />
+    <meta property="og:url" content="https://wakeellimousine.com/" />
+    <meta property="og:image" content="https://wakeellimousine.com/og/al-wakeel-home.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="خدمة الليموزين التنفيذي والنقل الخاص من Al Wakeel Limousine" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script type="application/ld+json">
+    <meta name="twitter:title" content="Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر" />
+    <meta
+      name="twitter:description"
+      content="تنقل خاص بخصوصية كاملة من الإسكندرية إلى المطارات والمدن والوجهات السياحية منذ عام 2014. اختر فئة الخدمة المناسبة لرحلتك."
+    />
+    <meta name="twitter:image" content="https://wakeellimousine.com/og/al-wakeel-home.jpg" />
+    <script id="al-wakeel-schema-ld" type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Al Wakeel Limousine Services | الوكيل لخدمات الليموزين",
-        "description": "خدمات ليموزين وتنقل خاص تنفيذي منذ عام 2014، من وإلى المطارات والمدن والوجهات السياحية.",
-        "foundingDate": "2014",
-        "telephone": "+201000053774",
-        "email": "info@wakeellimousine.com",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "أبراج قمراية – رشدي – طريق الجيش – ستانلي",
-          "addressLocality": "الإسكندرية",
-          "addressCountry": "EG"
-        },
-        "areaServed": [
-          "الإسكندرية",
-          "مطار برج العرب الدولي",
-          "القاهرة",
-          "مطار القاهرة الدولي",
-          "الساحل الشمالي"
+        "@graph": [
+          {
+            "@type": "LocalBusiness",
+            "@id": "https://wakeellimousine.com/#organization",
+            "name": "Al Wakeel Limousine | الوكيل لخدمات الليموزين",
+            "url": "https://wakeellimousine.com/",
+            "image": "https://wakeellimousine.com/og/al-wakeel-home.jpg",
+            "description": "خدمات ليموزين وتنقل خاص تنفيذي منذ عام 2014، من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي وجميع المحافظات.",
+            "foundingDate": "2014",
+            "telephone": "+201000053774",
+            "email": "info@wakeellimousine.com",
+            "priceRange": "850 EGP - 3600 EGP",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "أبراج قمراية – رشدي – طريق الجيش – ستانلي",
+              "addressLocality": "الإسكندرية",
+              "addressCountry": "EG"
+            },
+            "areaServed": [
+              { "@type": "City", "name": "الإسكندرية" },
+              { "@type": "Airport", "name": "مطار برج العرب الدولي" },
+              { "@type": "Airport", "name": "مطار القاهرة الدولي" },
+              { "@type": "Airport", "name": "مطار سفنكس الدولي" },
+              { "@type": "Place", "name": "الساحل الشمالي" }
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "فئات خدمة الليموزين والنقل الخاص",
+              "itemListElement": [
+                {
+                  "@type": "Service",
+                  "name": "فئة سيدان مريحة",
+                  "alternateName": "Comfort Sedan",
+                  "serviceType": "Private Limousine & Chauffeur Transfer",
+                  "url": "https://wakeellimousine.com/services/sedan-comfort"
+                },
+                {
+                  "@type": "Service",
+                  "name": "فئة بريميوم",
+                  "alternateName": "Premium",
+                  "serviceType": "Private Limousine & Chauffeur Transfer",
+                  "url": "https://wakeellimousine.com/services/premium"
+                },
+                {
+                  "@type": "Service",
+                  "name": "فئة ميني فان",
+                  "alternateName": "Mini Van",
+                  "serviceType": "Private Limousine & Chauffeur Transfer",
+                  "url": "https://wakeellimousine.com/services/mini-van"
+                },
+                {
+                  "@type": "Service",
+                  "name": "فئة ميني فان بريميوم",
+                  "alternateName": "Premium Mini Van",
+                  "serviceType": "Private Limousine & Chauffeur Transfer",
+                  "url": "https://wakeellimousine.com/services/mini-van-premium"
+                }
+              ]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://wakeellimousine.com/#website",
+            "url": "https://wakeellimousine.com/",
+            "name": "Al Wakeel Limousine",
+            "inLanguage": "ar-EG",
+            "publisher": { "@id": "https://wakeellimousine.com/#organization" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://wakeellimousine.com/#webpage",
+            "url": "https://wakeellimousine.com/",
+            "name": "Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر",
+            "description": "الوكيل لخدمات الليموزين منذ عام 2014 – خدمات تنقل خاصة من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي بفئات خدمة تناسب احتياجك.",
+            "inLanguage": "ar-EG",
+            "isPartOf": { "@id": "https://wakeellimousine.com/#website" },
+            "about": { "@id": "https://wakeellimousine.com/#organization" }
+          }
         ]
       }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

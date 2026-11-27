@@ -1,15 +1,26 @@
 import React from 'react';
 import { Car, Shield, Phone, Mail, MapPin } from 'lucide-react';
+import {
+  ALL_SERVICE_SLUGS,
+  SERVICE_SEO_CATALOG,
+  ServiceCategorySlug,
+  getServiceCategoryPath,
+} from '../data/seoCatalog';
 
 interface FooterProps {
   onNavigate?: (target: 'home' | 'services' | 'daily-rental' | 'fleet' | 'why-al-wakeel' | 'faq' | 'contact' | 'contact-footer') => void;
   onOpenBooking?: () => void;
+  onOpenCategoryPage?: (slug: ServiceCategorySlug) => void;
 }
 
 const WHATSAPP_URL = 'https://wa.me/201000053774';
 const OFFICIAL_ADDRESS_AR = 'أبراج قمراية – رشدي – طريق الجيش – ستانلي – الإسكندرية';
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onNavigate,
+  onOpenBooking,
+  onOpenCategoryPage,
+}) => {
   const handleNav = (target: 'home' | 'services' | 'daily-rental' | 'fleet' | 'why-al-wakeel' | 'faq' | 'contact' | 'contact-footer') => {
     if (onNavigate) {
       onNavigate(target);
@@ -27,7 +38,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 text-right">
           
           {/* Group 1: Brand Identity & Description */}
-          <div className="md:col-span-5 space-y-3.5">
+          <div className="md:col-span-4 space-y-3.5">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#C9A96B] flex items-center justify-center text-[#101D2D] shadow-lg shrink-0">
                 <Car className="w-5 h-5" />
@@ -47,8 +58,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
             <p className="font-label text-[#91B9C8]">خبرة تمتد منذ عام 2014</p>
           </div>
 
-          {/* Group 2: Quick Navigation Links */}
-          <div className="md:col-span-3 space-y-3">
+          {/* Group 2A: Quick Navigation Links */}
+          <div className="md:col-span-2 space-y-3">
             <h4 className="font-label text-[#C9A96B] font-semibold">روابط سريعة</h4>
             <ul className="space-y-1.5 font-sub text-[#9A9A96]">
               <li>
@@ -84,7 +95,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
                   onClick={() => handleNav('fleet')}
                   className="hover:text-white transition-colors py-1 text-right"
                 >
-                  أسطولنا
+                  فئات الخدمة
                 </button>
               </li>
               <li>
@@ -123,6 +134,32 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => 
                   احجز رحلتك
                 </button>
               </li>
+            </ul>
+          </div>
+
+          {/* Group 2B: Direct Service Category Landing Pages */}
+          <div className="md:col-span-2 space-y-3">
+            <h4 className="font-label text-[#C9A96B] font-semibold">فئات الخدمة</h4>
+            <ul className="space-y-1.5 font-sub text-[#9A9A96]">
+              {ALL_SERVICE_SLUGS.map((slug) => {
+                const entry = SERVICE_SEO_CATALOG[slug];
+                return (
+                  <li key={slug}>
+                    <a
+                      href={getServiceCategoryPath(slug)}
+                      onClick={(e) => {
+                        if (onOpenCategoryPage) {
+                          e.preventDefault();
+                          onOpenCategoryPage(slug);
+                        }
+                      }}
+                      className="block hover:text-white transition-colors py-1 text-right"
+                    >
+                      فئة {entry.nameAr}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

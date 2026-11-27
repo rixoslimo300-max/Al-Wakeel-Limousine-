@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { QuickBookingBar, QuickBookingPreset } from './components/QuickBookingBar';
@@ -6,9 +6,15 @@ import { ServicesSection, AirportTransferSelection } from './components/Services
 import { DailyRentalSection } from './components/DailyRentalSection';
 import { WhyAlWakeelSection } from './components/WhyAlWakeelSection';
 import { FleetSection } from './components/FleetSection';
-import { CustomerBookings } from './components/CustomerBookings';
-import { AdminDashboard } from './components/AdminDashboard';
 import { BookingModal, BookingFlowMode } from './components/BookingModal';
+import { OfflineIndicator } from './components/OfflineIndicator';
+
+const LazyCustomerBookings = React.lazy(() =>
+  import('./components/CustomerBookings').then((mod) => ({ default: mod.CustomerBookings }))
+);
+const LazyAdminDashboard = React.lazy(() =>
+  import('./components/AdminDashboard').then((mod) => ({ default: mod.AdminDashboard }))
+);
 import { Footer } from './components/Footer';
 import { DestinationsSection } from './components/DestinationsSection';
 import { ContactSection } from './components/ContactSection';
@@ -18,6 +24,12 @@ import { Service, Vehicle, PricingRule, ServiceCategoryKey } from './types';
 import { initialServices, initialVehicles, initialPricingRules } from './data/mockData';
 import { extractStructuredRouteRules, DailyRentalPackageId } from './lib/bookingEngine';
 import {
+  ServiceCategorySlug,
+  parseServiceSlugFromLocation,
+  getServiceCategoryPath,
+} from './data/seoCatalog';
+import { syncPageSeoAndSchema } from './lib/seoAndShare';
+import {
   db,
   collection,
   getDocs,
@@ -26,6 +38,12 @@ import {
   testConnection,
   isOfflineOrNetworkError,
 } from './lib/firebase';
+
+const LazyServiceCategoryPage = React.lazy(() =>
+  import('./components/ServiceCategoryPage').then((mod) => ({
+    default: mod.ServiceCategoryPage,
+  }))
+);
 
 const CATALOG_CACHE_KEY = 'alwakeel_catalog_cache_v3';
 const CACHE_TTL_MS = 15 * 60 * 1000;
@@ -66,6 +84,14 @@ function writeCatalogCache(services: Service[], vehicles: Vehicle[], pricingRule
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('home');
+  const [activeCategorySlug, setActiveCategorySlug] = useState<ServiceCategorySlug | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return parseServiceSlugFromLocation(
+      window.location.pathname,
+      window.location.search,
+      window.location.hash
+    );
+  });
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
 
   const [bookingMode, setBookingMode] = useState<BookingFlowMode>('transfer');
@@ -78,6 +104,9 @@ export default function App() {
   const [preselectedPassengers, setPreselectedPassengers] = useState<number | null>(null);
   const [preselectedCategory, setPreselectedCategory] = useState<ServiceCategoryKey | null>(null);
   const [preselectedService, setPreselectedService] = useState<Service | null>(null);
+  const [bookingOpenedFromQuickBar, setBookingOpenedFromQuickBar] = useState<boolean>(false);
+  const [bookingOpenNonce, setBookingOpenNonce] = useState<number>(0);
+  const [pendingEditReturnStep, setPendingEditReturnStep] = useState<1 | 2 | 3 | null>(null);
 
   const cached = readCatalogCache();
   const [services, setServices] = useState<Service[]>(cached?.services || initialServices);
@@ -85,6 +114,26 @@ export default function App() {
   const [pricingRules, setPricingRules] = useState<PricingRule[]>(
     extractStructuredRouteRules(cached?.pricingRules || initialPricingRules)
   );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handlePopState = () => {
+      const slug = parseServiceSlugFromLocation(
+        window.location.pathname,
+        window.location.search,
+        window.location.hash
+      );
+      setActiveCategorySlug(slug);
+      setActiveTab('home');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    syncPageSeoAndSchema(activeTab === 'home' ? activeCategorySlug : null);
+  }, [activeTab, activeCategorySlug]);
 
   useEffect(() => {
     let cancelled = false;
@@ -172,16 +221,31 @@ export default function App() {
     };
   }, []);
 
+  const handleOpenCategoryPage = (slug: ServiceCategorySlug) => {
+    setActiveTab('home');
+    setActiveCategorySlug(slug);
+    if (typeof window !== 'undefined') {
+      const targetPath = getServiceCategoryPath(slug);
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState({ categorySlug: slug }, '', targetPath);
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleOpenBooking = () => {
     setBookingMode('transfer');
     setPreselectedDailyPackageId(null);
-    setPreselectedOrigin('الإسكندرية');
-    setPreselectedDestination('مطار برج العرب الدولي');
+    setPreselectedOrigin(null);
+    setPreselectedDestination(null);
     setPreselectedDate(null);
     setPreselectedTime(null);
-    setPreselectedPassengers(2);
-    setPreselectedCategory('sedan_comfort');
+    setPreselectedPassengers(null);
+    setPreselectedCategory(null);
     setPreselectedService(null);
+    setBookingOpenedFromQuickBar(false);
+    setPendingEditReturnStep(null);
+    setBookingOpenNonce((n) => n + 1);
     setIsBookingOpen(true);
   };
 
@@ -192,9 +256,12 @@ export default function App() {
     setPreselectedDestination(selection.destination);
     setPreselectedDate(null);
     setPreselectedTime(null);
-    setPreselectedPassengers(2);
+    setPreselectedPassengers(null);
     setPreselectedCategory(selection.category);
     setPreselectedService(null);
+    setBookingOpenedFromQuickBar(false);
+    setPendingEditReturnStep(null);
+    setBookingOpenNonce((n) => n + 1);
     setIsBookingOpen(true);
   };
 
@@ -204,6 +271,9 @@ export default function App() {
     setPreselectedDate(null);
     setPreselectedTime(null);
     setPreselectedService(null);
+    setBookingOpenedFromQuickBar(false);
+    setPendingEditReturnStep(null);
+    setBookingOpenNonce((n) => n + 1);
     setIsBookingOpen(true);
   };
 
@@ -214,22 +284,31 @@ export default function App() {
     setPreselectedDestination(destination);
     setPreselectedDate(null);
     setPreselectedTime(null);
-    setPreselectedPassengers(2);
-    setPreselectedCategory('sedan_comfort');
+    setPreselectedPassengers(null);
+    setPreselectedCategory(null);
     setPreselectedService(null);
+    setBookingOpenedFromQuickBar(false);
+    setPendingEditReturnStep(null);
+    setBookingOpenNonce((n) => n + 1);
     setIsBookingOpen(true);
   };
 
-  const handleOpenBookingWithCategory = (category: ServiceCategoryKey) => {
+  const handleOpenBookingWithCategory = (
+    category: ServiceCategoryKey | null,
+    presetRoute?: { origin: string; destination: string }
+  ) => {
     setBookingMode('transfer');
     setPreselectedDailyPackageId(null);
-    setPreselectedOrigin('الإسكندرية');
-    setPreselectedDestination('مطار برج العرب الدولي');
+    setPreselectedOrigin(presetRoute ? presetRoute.origin : null);
+    setPreselectedDestination(presetRoute ? presetRoute.destination : null);
     setPreselectedDate(null);
     setPreselectedTime(null);
-    setPreselectedPassengers(category === 'mini_van' ? 4 : 2);
+    setPreselectedPassengers(null);
     setPreselectedCategory(category);
     setPreselectedService(null);
+    setBookingOpenedFromQuickBar(false);
+    setPendingEditReturnStep(null);
+    setBookingOpenNonce((n) => n + 1);
     setIsBookingOpen(true);
   };
 
@@ -243,7 +322,29 @@ export default function App() {
     setPreselectedPassengers(preset.passengersCount || 2);
     setPreselectedCategory(preset.serviceCategory || null);
     setPreselectedService(preset.service || null);
+    setBookingOpenedFromQuickBar(true);
+    setBookingOpenNonce((n) => n + 1);
     setIsBookingOpen(true);
+  };
+
+  const handleEditPassengersInQuickBar = (fromStep: 2 | 3) => {
+    setIsBookingOpen(false);
+    setPendingEditReturnStep(fromStep);
+    setActiveCategorySlug(null);
+    setActiveTab('home');
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.history.pushState({}, '', '/');
+    }
+    setTimeout(() => {
+      const bar = document.getElementById('quick-booking-bar');
+      if (bar) {
+        bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      const selectEl = document.getElementById('qb-passengers') as HTMLSelectElement | null;
+      if (selectEl) {
+        selectEl.focus();
+      }
+    }, 80);
   };
 
   const handlePricingRulesUpdated = (updated: PricingRule[]) => {
@@ -265,13 +366,19 @@ export default function App() {
       | 'admin'
   ) => {
     if (target === 'my-bookings' || target === 'admin') {
+      setActiveCategorySlug(null);
       setActiveTab(target);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    const wasDifferentTab = activeTab !== 'home';
+    const wasDifferentView = activeTab !== 'home' || activeCategorySlug !== null;
+    setActiveCategorySlug(null);
     setActiveTab('home');
+
+    if (typeof window !== 'undefined' && (window.location.pathname !== '/' || window.location.search)) {
+      window.history.pushState({}, '', '/');
+    }
 
     const scrollTarget = () => {
       if (target === 'home') {
@@ -284,8 +391,8 @@ export default function App() {
       }
     };
 
-    if (wasDifferentTab) {
-      setTimeout(scrollTarget, 60);
+    if (wasDifferentView) {
+      setTimeout(scrollTarget, 70);
     } else {
       scrollTarget();
     }
@@ -300,7 +407,25 @@ export default function App() {
         onOpenBooking={handleOpenBooking}
       />
 
-      {activeTab === 'home' && (
+      {activeTab === 'home' && activeCategorySlug && (
+        <Suspense
+          fallback={
+            <div className="min-h-[60vh] flex items-center justify-center bg-[#101D2D] text-[#C9A96B] text-sm">
+              جاري تحميل صفحة الفئة...
+            </div>
+          }
+        >
+          <LazyServiceCategoryPage
+            slug={activeCategorySlug}
+            pricingRules={pricingRules}
+            onNavigateHome={() => handleNavigateSection('home')}
+            onNavigateCategory={handleOpenCategoryPage}
+            onBookCategory={handleOpenBookingWithCategory}
+          />
+        </Suspense>
+      )}
+
+      {activeTab === 'home' && !activeCategorySlug && (
         <main>
           <Hero
             onOpenBooking={handleOpenBooking}
@@ -313,6 +438,7 @@ export default function App() {
           <ServicesSection
             pricingRules={pricingRules}
             onSelectTransfer={handleOpenAirportTransfer}
+            onOpenCategoryPage={handleOpenCategoryPage}
           />
           <DailyRentalSection
             onSelectPackage={handleOpenDailyRental}
@@ -320,6 +446,7 @@ export default function App() {
           <WhyAlWakeelSection />
           <FleetSection
             onSelectCategory={handleOpenBookingWithCategory}
+            onOpenCategoryPage={handleOpenCategoryPage}
           />
           <DestinationsSection
             services={services}
@@ -333,23 +460,38 @@ export default function App() {
       )}
 
       {activeTab === 'my-bookings' && (
-        <CustomerBookings
-          onOpenBooking={handleOpenBooking}
-        />
+        <Suspense
+          fallback={
+            <div className="min-h-[50vh] flex items-center justify-center text-[#C9A96B] font-medium text-sm">
+              جاري تحميل سجل الحجوزات...
+            </div>
+          }
+        >
+          <LazyCustomerBookings onOpenBooking={handleOpenBooking} />
+        </Suspense>
       )}
 
       {activeTab === 'admin' && (
-        <AdminDashboard
-          services={services}
-          vehicles={vehicles}
-          pricingRules={pricingRules}
-          onPricingRulesUpdated={handlePricingRulesUpdated}
-        />
+        <Suspense
+          fallback={
+            <div className="min-h-[50vh] flex items-center justify-center text-[#C9A96B] font-medium text-sm">
+              جاري تحميل لوحة التحكم الإدارية...
+            </div>
+          }
+        >
+          <LazyAdminDashboard
+            services={services}
+            vehicles={vehicles}
+            pricingRules={pricingRules}
+            onPricingRulesUpdated={handlePricingRulesUpdated}
+          />
+        </Suspense>
       )}
 
       <Footer
         onNavigate={handleNavigateSection}
         onOpenBooking={handleOpenBooking}
+        onOpenCategoryPage={handleOpenCategoryPage}
       />
 
       <BookingModal
@@ -366,6 +508,11 @@ export default function App() {
         preselectedPassengers={preselectedPassengers}
         preselectedCategory={preselectedCategory}
         preselectedService={preselectedService}
+        openedFromQuickBar={bookingOpenedFromQuickBar}
+        openTriggerNonce={bookingOpenNonce}
+        returnToStepAfterEdit={pendingEditReturnStep}
+        onClearReturnStep={() => setPendingEditReturnStep(null)}
+        onEditPassengersAtEntry={handleEditPassengersInQuickBar}
         onBookingSubmitted={() => {
           setActiveTab('my-bookings');
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -373,6 +520,7 @@ export default function App() {
       />
 
       <WhatsAppFab />
+      <OfflineIndicator />
 
     </div>
   );

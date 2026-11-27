@@ -43,6 +43,7 @@
         "sedanPrice": { "type": "number" },
         "suvPrice": { "type": "number" },
         "miniVanPrice": { "type": "number" },
+        "miniVanPremiumPrice": { "type": "number" },
         "isActive": { "type": "boolean" },
         "bidirectional": { "type": "boolean" }
       }

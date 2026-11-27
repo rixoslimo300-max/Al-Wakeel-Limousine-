@@ -1,25 +1,90 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Public catalog collections: readable and writable for seamless app operation & seeding
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        request.auth.token.email == 'eyad.marine30@gmail.com';
+    }
+
+    function isBookingOwner(resData) {
+      return isAuthenticated() && (
+        resData.customerId == request.auth.uid ||
+        (request.auth.token.email != null && resData.customerEmail == request.auth.token.email)
+      );
+    }
+
+    function isValidBookingPayload() {
+      let data = request.resource.data;
+      return data.customerName is string &&
+        data.customerName.size() > 0 &&
+        data.customerName.size() <= 120 &&
+        data.customerPhone is string &&
+        data.customerPhone.size() >= 7 &&
+        data.customerPhone.size() <= 35 &&
+        data.pickupLocation is string &&
+        data.pickupLocation.size() > 0 &&
+        data.pickupLocation.size() <= 250 &&
+        data.dropoffLocation is string &&
+        data.dropoffLocation.size() > 0 &&
+        data.dropoffLocation.size() <= 250 &&
+        data.pickupDateTime is string &&
+        data.passengersCount is number &&
+        data.passengersCount >= 1 &&
+        data.passengersCount <= 50 &&
+        data.status == 'pending_review' &&
+        (!isAuthenticated() ? data.customerId == 'guest' : (data.customerId == request.auth.uid || data.customerId == 'guest'));
+    }
+
+    // Public catalog collections: Publicly readable, admin-only writable
     match /services/{serviceId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /vehicles/{vehicleId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /pricingRules/{ruleId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
+    // Drivers: Internal operational fleet directory
     match /drivers/{driverId} {
-      allow read, write: if true;
+      allow read, write: if isAdmin();
     }
 
+    // Connectivity test probe
+    match /test/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Customer Bookings: Hardened access control
+    // - Creation: Validated submission allowed for customers and guest bookings
+    // - Read: Restricted to verified admin or document owner
+    // - Update: Admin full management, or owner self-cancellation
+    // - Delete: Restricted to verified admin
     match /bookings/{bookingId} {
-      allow read, write: if true;
+      allow create: if isValidBookingPayload();
+      
+      allow read: if isAdmin() || isBookingOwner(resource.data);
+
+      allow update: if isAdmin() || (
+        isBookingOwner(resource.data) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+        request.resource.data.status == 'cancelled'
+      );
+
+      allow delete: if isAdmin();
     }
   }
 }

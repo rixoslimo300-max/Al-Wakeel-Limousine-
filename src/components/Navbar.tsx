@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Car, User as UserIcon, LogOut, Calendar, Wrench, PhoneCall, Menu, X, ChevronLeft } from 'lucide-react';
 import { auth, googleProvider, signInWithPopup, signOut } from '../lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface NavbarProps {
   activeTab: string;
@@ -86,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigateSection, on
     onNavigateSection(target);
   };
 
-  const isAdmin = user?.email === 'eyad.marine30@gmail.com' || user?.email?.includes('admin');
+  const isAdmin = user?.email === 'eyad.marine30@gmail.com';
 
   const navItems: Array<{
     id: 'home' | 'services' | 'daily-rental' | 'fleet' | 'why-al-wakeel' | 'contact' | 'contact-footer' | 'my-bookings' | 'admin';
@@ -97,7 +98,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigateSection, on
     { id: 'home', label: 'الرئيسية' },
     { id: 'services', label: 'انتقالات المطارات' },
     { id: 'daily-rental', label: 'التأجير اليومي' },
-    { id: 'fleet', label: 'أسطولنا' },
+    { id: 'fleet', label: 'فئات الخدمة' },
     { id: 'contact', label: 'تواصل معنا' },
     ...(user ? [{ id: 'my-bookings' as const, label: 'سجل الحجوزات', icon: Calendar }] : []),
     ...(isAdmin ? [{ id: 'admin' as const, label: 'الإدارة', icon: Wrench, isAdmin: true }] : []),
@@ -170,10 +171,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigateSection, on
               <span dir="ltr" className="font-latin font-semibold text-[#F6F5F1] tabular-nums">+201000053774</span>
             </a>
 
+            <PWAInstallButton className="hidden sm:inline-flex" />
+
             <button
               type="button"
               onClick={onOpenBooking}
-              className="bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold px-3.5 md:px-5 min-h-[40px] md:min-h-[42px] rounded-xl shadow-md shadow-black/20 transition-all active:scale-[0.98] text-xs md:text-sm whitespace-nowrap shrink-0"
+              className="bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold px-3.5 md:px-5 min-h-[40px] md:min-h-[42px] rounded-xl shadow-md shadow-black/20 transition-all active:scale-[0.98] text-xs md:text-sm whitespace-nowrap shrink-0 animate-pulse-gold"
             >
               احجز رحلتك
             </button>
@@ -293,6 +296,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigateSection, on
 
               {/* Drawer Primary CTA & Phone */}
               <div className="px-5 py-4 border-t border-[#C9A96B]/15 space-y-3">
+                <PWAInstallButton className="w-full justify-center min-h-[44px] text-sm" />
+
                 <button
                   type="button"
                   onClick={() => {

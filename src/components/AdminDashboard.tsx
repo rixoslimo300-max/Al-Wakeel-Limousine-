@@ -34,7 +34,10 @@ function resolveBookingCategoryKey(booking: Booking): ServiceCategoryKey {
   if (booking.serviceCategory && SERVICE_CATEGORIES[booking.serviceCategory]) {
     return booking.serviceCategory;
   }
-  if (booking.passengersCount >= 4 || booking.vehicleCategoryId === 'family-van') {
+  if (booking.vehicleCategoryId === 'premium-minivan') {
+    return 'mini_van_premium';
+  }
+  if (booking.passengersCount > 6 || booking.vehicleCategoryId === 'family-van') {
     return 'mini_van';
   }
   if (booking.vehicleCategoryId === 'vip-suv') {
@@ -67,6 +70,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [ruleSedanPrice, setRuleSedanPrice] = useState<string>('');
   const [ruleSuvPrice, setRuleSuvPrice] = useState<string>('');
   const [ruleMiniVanPrice, setRuleMiniVanPrice] = useState<string>('');
+  const [ruleMiniVanPremiumPrice, setRuleMiniVanPremiumPrice] = useState<string>('');
   const [ruleIsActive, setRuleIsActive] = useState<boolean>(true);
   const [ruleNotes, setRuleNotes] = useState<string>('');
   const [confirmDeleteRuleId, setConfirmDeleteRuleId] = useState<string | null>(null);
@@ -89,7 +93,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const isAdmin =
     Boolean(user?.email) &&
-    (user?.email === 'eyad.marine30@gmail.com' || user?.email?.includes('admin'));
+    user?.email === 'eyad.marine30@gmail.com';
 
   useEffect(() => {
     if (!isAdmin) {
@@ -216,6 +220,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setRuleSedanPrice('');
     setRuleSuvPrice('');
     setRuleMiniVanPrice('');
+    setRuleMiniVanPremiumPrice('');
     setRuleIsActive(true);
     setRuleNotes('');
   };
@@ -228,6 +233,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setRuleSedanPrice(rule.sedanPrice != null ? String(rule.sedanPrice) : '');
     setRuleSuvPrice(rule.suvPrice != null ? String(rule.suvPrice) : '');
     setRuleMiniVanPrice(rule.miniVanPrice != null ? String(rule.miniVanPrice) : '');
+    setRuleMiniVanPremiumPrice(rule.miniVanPremiumPrice != null ? String(rule.miniVanPremiumPrice) : '');
     setRuleIsActive(rule.isActive !== false);
     setRuleNotes(rule.notes || '');
   };
@@ -239,6 +245,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const parsedSedan = ruleSedanPrice.trim() ? Number(ruleSedanPrice) : null;
     const parsedSuv = ruleSuvPrice.trim() ? Number(ruleSuvPrice) : null;
     const parsedMiniVan = ruleMiniVanPrice.trim() ? Number(ruleMiniVanPrice) : null;
+    const parsedMiniVanPremium = ruleMiniVanPremiumPrice.trim() ? Number(ruleMiniVanPremiumPrice) : null;
     const targetId = editingRuleId || `route-${Date.now()}`;
     const existingRule = structuredRules.find((r) => r.id === targetId);
 
@@ -252,6 +259,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       sedanPrice: parsedSedan && parsedSedan > 0 ? parsedSedan : null,
       suvPrice: parsedSuv && parsedSuv > 0 ? parsedSuv : null,
       miniVanPrice: parsedMiniVan && parsedMiniVan > 0 ? parsedMiniVan : null,
+      miniVanPremiumPrice: parsedMiniVanPremium && parsedMiniVanPremium > 0 ? parsedMiniVanPremium : null,
       baseRate: parsedSedan && parsedSedan > 0 ? parsedSedan : parsedSuv || 0,
       isActive: ruleIsActive,
       bidirectional: true,
@@ -577,38 +585,49 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block font-label text-[#9A9A96] mb-1.5">سعر سيدان (ج.م)</label>
+                    <label className="block font-label text-[#9A9A96] mb-1.5 text-xs">سعر سيدان (ج.م)</label>
                     <input
                       type="number"
                       min={0}
                       placeholder="850"
                       value={ruleSedanPrice}
                       onChange={(e) => setRuleSedanPrice(e.target.value)}
-                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#C9A96B]"
+                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C9A96B]"
                     />
                   </div>
                   <div>
-                    <label className="block font-label text-[#9A9A96] mb-1.5">سعر SUV (ج.م)</label>
+                    <label className="block font-label text-[#9A9A96] mb-1.5 text-xs">سعر SUV (ج.م)</label>
                     <input
                       type="number"
                       min={0}
                       placeholder="1200"
                       value={ruleSuvPrice}
                       onChange={(e) => setRuleSuvPrice(e.target.value)}
-                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#C9A96B]"
+                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C9A96B]"
                     />
                   </div>
                   <div>
-                    <label className="block font-label text-[#9A9A96] mb-1.5">سعر ميني فان</label>
+                    <label className="block font-label text-[#9A9A96] mb-1.5 text-xs">سعر ميني فان (ج.م)</label>
                     <input
                       type="number"
                       min={0}
                       placeholder="غير محدد"
                       value={ruleMiniVanPrice}
                       onChange={(e) => setRuleMiniVanPrice(e.target.value)}
-                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#C9A96B]"
+                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C9A96B]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-label text-[#9A9A96] mb-1.5 text-xs">ميني فان بريميوم (ج.م)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      placeholder="غير محدد"
+                      value={ruleMiniVanPremiumPrice}
+                      onChange={(e) => setRuleMiniVanPremiumPrice(e.target.value)}
+                      className="w-full bg-[#101D2D] border border-[#C9A96B]/30 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C9A96B]"
                     />
                   </div>
                 </div>
@@ -716,7 +735,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 pt-3 border-t border-[#C9A96B]/15 font-sub tabular-nums">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#C9A96B]/15 font-sub tabular-nums">
                       <div className="bg-[#101D2D] rounded-xl p-3">
                         <span className="text-[#9A9A96] block text-xs">سيدان مريحة</span>
                         <span className="text-[#C9A96B] font-bold">
@@ -732,7 +751,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <div className="bg-[#101D2D] rounded-xl p-3">
                         <span className="text-[#9A9A96] block text-xs">ميني فان (4–5 ركاب)</span>
                         <span className={rule.miniVanPrice ? 'text-[#C9A96B] font-bold' : 'text-[#91B9C8]'}>
-                          {rule.miniVanPrice ? `${rule.miniVanPrice.toLocaleString('en-US')} ج.م` : 'يتطلب إعداد السعر'}
+                          {rule.miniVanPrice ? `${rule.miniVanPrice.toLocaleString('en-US')} ج.م` : 'يتطلب إعداد'}
+                        </span>
+                      </div>
+                      <div className="bg-[#101D2D] rounded-xl p-3">
+                        <span className="text-[#9A9A96] block text-xs">ميني فان بريميوم (Carnival)</span>
+                        <span className={rule.miniVanPremiumPrice ? 'text-[#C9A96B] font-bold' : 'text-[#91B9C8]'}>
+                          {rule.miniVanPremiumPrice ? `${rule.miniVanPremiumPrice.toLocaleString('en-US')} ج.م` : 'يتطلب إعداد'}
                         </span>
                       </div>
                     </div>
@@ -755,8 +780,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <div className="aspect-video w-full overflow-hidden bg-[#0B1522]">
                       <SafeImage
                         src={m.imageUrl}
-                        alt={m.nameAr}
-                        variant={m.group === 'suv-family' ? 'suv' : 'sedan'}
+                        alt={`${m.nameAr} (${m.nameEn})`}
+                        unavailableTextAr={m.imageUnavailableReasonAr}
+                        variant={
+                          m.id === 'toyota-hiace-m55'
+                            ? 'hiace'
+                            : m.id === 'kia-carnival'
+                              ? 'carnival'
+                              : m.id === 'kia-sportage'
+                                ? 'sportage'
+                                : m.group === 'mini-van'
+                                  ? 'van'
+                                  : m.group === 'suv-family'
+                                    ? 'suv'
+                                    : 'sedan'
+                        }
+                        width={1000}
+                        height={558}
+                        loading="lazy"
                         className="w-full h-full object-cover opacity-90"
                       />
                     </div>
