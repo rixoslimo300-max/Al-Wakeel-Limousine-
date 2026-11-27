@@ -6,32 +6,32 @@ const PILLARS = [
   {
     id: 'drivers',
     icon: UserCheck,
-    titleAr: 'سائقون محترفون',
-    descriptionAr: 'سائقون مدربون على آداب الاستقبال والقيادة الهادئة في الطرق السريعة وداخل المدن.',
+    titleAr: 'استقبال وتعامل مهني',
+    descriptionAr: 'تواصل واضح وآداب استقبال وقيادة تراعي طبيعة الرحلة داخل المدن وعلى الطرق السريعة.',
   },
   {
     id: 'punctuality',
     icon: Clock,
-    titleAr: 'الالتزام بالمواعيد',
-    descriptionAr: 'حضور منضبط قبل موعد الانطلاق ومتابعة دقيقة لمواعيد الوصول في رحلات المطارات.',
+    titleAr: 'تنسيق مرتبط بموعد رحلتك',
+    descriptionAr: 'نراجع موعد الانطلاق أو الوصول وبيانات الرحلة التي تقدمها، حتى تكون تفاصيل التحرك واضحة قبل التنفيذ.',
   },
   {
     id: 'privacy',
     icon: ShieldCheck,
-    titleAr: 'تنقل خاص بخصوصية كاملة',
-    descriptionAr: 'رحلات مخصصة لك أو لعائلتك أو ضيوفك دون مشاركة، مع عناية تامة بالهدوء والراحة.',
+    titleAr: 'سيارة مخصصة لك ولرفاقك',
+    descriptionAr: 'تنتقل أنت وعائلتك أو ضيوفك في رحلة خاصة دون مشاركة السيارة مع ركاب آخرين.',
   },
   {
     id: 'coordination',
     icon: Route,
-    titleAr: 'تنسيق متكامل للرحلات',
-    descriptionAr: 'ترتيب مسار الرحلة ونقاط الاستلام والتوقفات المسبقة عبر تواصل مباشر قبل التنفيذ.',
+    titleAr: 'تفاصيل الرحلة في صورة واحدة',
+    descriptionAr: 'نراجع نقطة الاستلام والوجهة والموعد والتوقفات المتفق عليها قبل تنفيذ الرحلة.',
   },
   {
     id: 'management',
     icon: ClipboardCheck,
-    titleAr: 'إدارة تشغيلية احترافية',
-    descriptionAr: 'إشراف مستمر على حالة الطلب، وتأكيد هاتفي واضح للسعر النهائي وتفاصيل التنفيذ.',
+    titleAr: 'سعر وتفاصيل قبل التأكيد',
+    descriptionAr: 'تراجع تفاصيل المسار والسعر النهائي مع مكتب الحجز قبل تنفيذ الرحلة، دون دفع إلكتروني مسبق.',
   },
 ];
 
@@ -51,18 +51,11 @@ export const WhyAlWakeelSection: React.FC = () => {
               <span>لماذا الوكيل لخدمات الليموزين</span>
             </div>
             <h2 className="font-section-heading text-white">
-              معايير تنفيذية تُبنى على الثقة والانضباط
+              اختيار واضح… من الفئة المناسبة حتى تفاصيل الرحلة
             </h2>
             <p className="font-body text-[#9A9A96] leading-relaxed">
-              تتولى الوكيل لخدمات الليموزين تنسيق رحلات النقل الخاص عبر أسطولها وشركائها المعتمدين، لضمان تجربة هادئة ومنظمة من لحظة الطلب وحتى الوصول.
+              بدل ما تحتار بين أنواع السيارات أو تخمّن سعة الأمتعة، اختار فئة خدمة واضحة وأدخل عدد الركاب والحقائب. يحدد النظام التخصيص وفق السعة، وتراجع السعر أو تطلب عرضًا قبل تأكيد الحجز.
             </p>
-            <div className="pt-3 border-t border-[#C9A96B]/20 flex items-center gap-3">
-              <span className="font-latin text-xs font-semibold tracking-[0.14em] uppercase text-[#C9A96B]" dir="ltr">
-                Since 2014
-              </span>
-              <span className="text-[#C9A96B]/40" aria-hidden="true">·</span>
-              <span className="font-sub text-[#91B9C8]">خبرة تمتد منذ عام 2014</span>
-            </div>
           </div>
 
           {/* Minimal Line-Icon Pillars Grid */}
