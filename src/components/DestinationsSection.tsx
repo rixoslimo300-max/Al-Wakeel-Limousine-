@@ -25,7 +25,7 @@ const CORE_DESTINATIONS: DestinationItem[] = [
   {
     id: 'dest-borg',
     titleAr: 'مطار برج العرب الدولي',
-    subtitleAr: 'من وإلى الإسكندرية بالاتجاهين بأسعار ثابتة ومتابعة دقيقة لموعد الرحلة.',
+    subtitleAr: 'ليموزين من الإسكندرية إلى مطار برج العرب أو استقبال منه؛ اختر فئة الخدمة واعرف سعر المسار قبل الحجز.',
     origin: 'الإسكندرية',
     destination: 'مطار برج العرب الدولي',
     serviceId: 'borg-el-arab-airport',
@@ -33,7 +33,7 @@ const CORE_DESTINATIONS: DestinationItem[] = [
   {
     id: 'dest-cairo',
     titleAr: 'مطار القاهرة الدولي',
-    subtitleAr: 'رحلات مباشرة بالاتجاهين بين الإسكندرية ومطار القاهرة الدولي بسيارات مجهزة.',
+    subtitleAr: 'رتّب انتقالك من الإسكندرية إلى مطار القاهرة أو العودة منه، مع اختيار فئة تناسب الركاب والحقائب.',
     origin: 'الإسكندرية',
     destination: 'مطار القاهرة الدولي',
     serviceId: 'cairo-airport',
@@ -41,7 +41,7 @@ const CORE_DESTINATIONS: DestinationItem[] = [
   {
     id: 'dest-sphinx',
     titleAr: 'مطار سفنكس الدولي',
-    subtitleAr: 'انتقالات منظمة بالاتجاهين بين الإسكندرية ومطار سفنكس الدولي بأسعار ثابتة.',
+    subtitleAr: 'احجز انتقالًا خاصًا بين الإسكندرية ومطار سفنكس، وراجع السعر المعتمد للمسار قبل إرسال الطلب.',
     origin: 'الإسكندرية',
     destination: 'مطار سفنكس الدولي',
     serviceId: 'sphinx-airport',
@@ -49,7 +49,7 @@ const CORE_DESTINATIONS: DestinationItem[] = [
   {
     id: 'dest-coast',
     titleAr: 'الساحل الشمالي والمدن',
-    subtitleAr: 'انتقالات مخصصة إلى مارينا والعلمين الجديدة والمحافظات وفق عرض سعر خاص.',
+    subtitleAr: 'خطط لرحلتك من الإسكندرية إلى مارينا أو العلمين الجديدة أو وجهات أخرى؛ اطلب عرض سعر حسب المسار والتوقيت.',
     origin: 'الإسكندرية',
     destination: 'الساحل الشمالي / مارينا',
     serviceId: 'north-coast',
@@ -86,10 +86,10 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({
                 <span>نطاق التغطية والمسارات</span>
               </div>
               <h2 className="font-section-heading text-white">
-                وجهات التشغيل الرئيسية
+                من الإسكندرية إلى وجهتك… اعرف المسار وطريقة التسعير
               </h2>
               <p className="font-body text-[#9A9A96]">
-                تنسيق مباشر من الإسكندرية إلى المطارات الدولية والوجهات الساحلية والمحافظات.
+                تعرّف على مسارات الليموزين من الإسكندرية إلى مطارات برج العرب والقاهرة وسفنكس، والرحلات الخاصة إلى الساحل الشمالي والمدن الأخرى.
               </p>
             </div>
           </div>
@@ -110,7 +110,7 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({
                         </div>
                         {referencePrice !== null ? (
                           <span className="font-label text-[#C9A96B] tabular-nums">
-                            يبدأ من {referencePrice.toLocaleString('en-US')} ج.م
+                            سيدان من {referencePrice.toLocaleString('en-US')} ج.م
                           </span>
                         ) : (
                           <span className="font-label text-[#91B9C8]">
@@ -150,10 +150,10 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({
                   <span>مكتب الحجز والتنسيق التنفيذي</span>
                 </div>
                 <h2 className="font-section-heading text-white">
-                  وجهتك القادمة تبدأ بتجربة مختلفة.
+                  حدّد وجهتك… وخلي تفاصيل انتقالك واضحة قبل الحجز.
                 </h2>
                 <p className="font-body text-[#9A9A96]">
-                  اختر رحلتك ودعنا نهتم بتفاصيل انتقالك. تأكيد هاتفي مباشر للسعر والموعد دون الحاجة لدفع إلكتروني مسبق.
+                  أدخل نقطة التحرك والوجهة والموعد وعدد الركاب والحقائب. راجع السعر المعتمد أو اطلب عرض سعر، ثم أرسل الحجز لتأكيد تفاصيل الرحلة دون دفع إلكتروني مسبق.
                 </p>
               </div>
 
