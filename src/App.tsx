@@ -33,8 +33,6 @@ import {
   db,
   collection,
   getDocs,
-  setDoc,
-  doc,
   testConnection,
   isOfflineOrNetworkError,
 } from './lib/firebase';
@@ -160,7 +158,9 @@ export default function App() {
 
         let nextServices = initialServices;
         if (servicesSnapshot.empty) {
-          await Promise.all(initialServices.map((s) => setDoc(doc(db, 'services', s.id), s)));
+          // Public catalog loading is read-only; seed data remains local until an
+          // authenticated administrative setup process writes it.
+          nextServices = initialServices;
         } else {
           const loaded: Service[] = [];
           servicesSnapshot.forEach((d) => loaded.push(d.data() as Service));
@@ -182,7 +182,7 @@ export default function App() {
 
         let nextVehicles = initialVehicles;
         if (vehiclesSnapshot.empty) {
-          await Promise.all(initialVehicles.map((v) => setDoc(doc(db, 'vehicles', v.id), v)));
+          nextVehicles = initialVehicles;
         } else {
           const loaded: Vehicle[] = [];
           vehiclesSnapshot.forEach((d) => loaded.push(d.data() as Vehicle));
@@ -195,7 +195,7 @@ export default function App() {
         const structuredLoaded = loadedRules.filter((r) => Boolean(r.origin && r.destination));
 
         if (structuredLoaded.length === 0) {
-          await Promise.all(initialPricingRules.map((r) => setDoc(doc(db, 'pricingRules', r.id), r)));
+          nextRules = initialPricingRules;
         } else {
           nextRules = structuredLoaded;
         }
