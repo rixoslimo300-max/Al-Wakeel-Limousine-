@@ -1,0 +1,38 @@
+name: Firestore Rules Tests
+
+on:
+  push:
+    branches:
+      - ai-development
+  pull_request:
+    branches:
+      - ai-development
+
+permissions:
+  contents: read
+
+jobs:
+  firestore-rules:
+    name: Firestore Emulator Security Rules
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.19.0"
+
+      - name: Set up Java for Firebase Emulator
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run Firestore rules tests in isolated emulator
+        run: npm run test:firestore
