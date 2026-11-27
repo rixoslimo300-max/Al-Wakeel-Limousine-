@@ -586,7 +586,7 @@ export function evaluateVehicleCapacity(params: {
         : null;
 
   const suvDisabledReason = allocation.forcedMiniVan
-    ? 'تتطلب السعة الحالية مركبة أكبر من فئة ميني فان.'
+    ? 'فئة SUV غير متاحة لهذه السعة؛ تم تخصيص فئة ميني فان المناسبة تلقائيًا.'
     : null;
 
   const miniVanDisabledReason =
