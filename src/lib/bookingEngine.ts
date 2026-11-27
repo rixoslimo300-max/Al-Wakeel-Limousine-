@@ -37,7 +37,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Comfort Sedan',
     fullLabelAr: 'Comfort Sedan — سيدان مريحة',
     descriptionAr:
-      'تجربة انتقال خاصة تجمع بين الراحة والعملية، مع خصوصية كاملة طوال الرحلة، لتصل إلى وجهتك بسهولة وهدوء.',
+      'انتقال خاص للأفراد والرحلات الصغيرة حتى 3 ركاب وحقيبتين؛ مناسب لمشاوير الإسكندرية إلى المطارات عندما تريد سيارة مخصصة لك ولرفاقك.',
     legacyVehicleCategoryId: 'sedan-luxury',
     minPassengers: 1,
     maxPassengers: 3,
@@ -49,7 +49,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Premium',
     fullLabelAr: 'Premium — بريميوم',
     descriptionAr:
-      'مستوى أعلى من الخصوصية والحضور والتجربة مع مساحة أرحب للركاب والأمتعة، لتصل إلى وجهتك براحة وتميز.',
+      'مساحة أوسع لرحلاتك الخاصة؛ تناسب حتى 4 ركاب مع 4 حقائب، أو 5–6 ركاب دون حقائب، وفق قواعد السعة المعتمدة.',
     legacyVehicleCategoryId: 'vip-suv',
     minPassengers: 1,
     maxPassengers: 6,
@@ -61,7 +61,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Mini Van',
     fullLabelAr: 'MINI VAN — ميني فان',
     descriptionAr:
-      'فئة عائلية وجماعية رحبة تُخصَّص تلقائيًا عند الحاجة إلى استيعاب أمتعة أكبر (5 حقائب فأكثر) أو مجموعات حتى 10 ركاب.',
+      'فئة للمجموعات والحمولات الأكبر؛ يحددها النظام وفق عدد الركاب والحقائب معًا، لتجميع الرحلة في مركبة واحدة متى سمحت السعة المعتمدة.',
     legacyVehicleCategoryId: 'family-van',
     minPassengers: 1,
     maxPassengers: 10,
@@ -73,7 +73,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Premium Mini Van',
     fullLabelAr: 'Premium Mini Van — ميني فان بريميوم',
     descriptionAr:
-      'فئة ميني فان بريميوم مستقلة فاخرة متاحة عند الطلب حتى 4 ركاب و5 حقائب كحد أقصى — السعر بعد مراجعة تفاصيل الرحلة.',
+      'فئة ضيافة مستقلة بمقصورة أوسع، متاحة حتى 4 ركاب و5 حقائب كحد أقصى؛ ويُحدد سعرها بعد مراجعة تفاصيل الرحلة.',
     legacyVehicleCategoryId: 'premium-minivan',
     minPassengers: 1,
     maxPassengers: 4,
