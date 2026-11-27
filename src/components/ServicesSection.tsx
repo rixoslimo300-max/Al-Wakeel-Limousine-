@@ -140,10 +140,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             <span>انتقالات المطارات · Airport Transfers</span>
           </div>
           <h2 className="font-section-heading text-white">
-            انتقالات خاصة مباشرة من وإلى المطارات
+            من الإسكندرية إلى المطار… انتقالك الخاص يبدأ بخطة واضحة
           </h2>
           <p className="font-body text-[#9A9A96] leading-relaxed">
-            رحلات توصيل خاصة من نقطة إلى نقطة (ذهاب أو عودة) بخصوصية كاملة دون مشاركة السيارة، مع أسعار ثابتة وواضحة للمطارات المعتمدة.
+            رتّب ليموزين من الإسكندرية إلى مطار برج العرب أو مطار القاهرة أو مطار سفنكس. اختر فئة الخدمة وحدد تفاصيل رحلتك؛ يعرض التطبيق السعر المعتمد للمسارات المسعّرة، أو يتيح لك طلب عرض سعر قبل تأكيد الحجز.
           </p>
         </div>
 
@@ -198,7 +198,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                           className="block group-hover:text-[#DFC89B] transition-colors focus-visible:outline-none after:absolute after:inset-0 after:z-10"
                         >
                           <h3 className="font-section-heading text-white leading-snug group-hover:text-[#DFC89B] transition-colors">
-                            {meta.titleAr} — انتقالات المطارات
+                            {item.key === 'sedan_comfort' ? 'ليموزين سيدان للمطار — انتقال خاص حتى 3 ركاب' : 'فئة بريميوم للمطار — مساحة أوسع للركاب والحقائب'}
                           </h3>
                         </a>
                       </div>
