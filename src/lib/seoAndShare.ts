@@ -1,4 +1,5 @@
 import {
+  DEFAULT_PUBLIC_SITE_URL,
   HOME_SEO,
   SERVICE_SEO_CATALOG,
   ServiceCategorySlug,
@@ -51,19 +52,15 @@ function upsertJsonLdScript(payload: Record<string, unknown>): void {
 
 export function getPublicShareUrl(slug: ServiceCategorySlug): string {
   const path = getServiceCategoryPath(slug);
-  if (typeof window !== 'undefined' && window.location?.origin) {
-    return `${window.location.origin}${path}`;
-  }
-  return `https://wakeellimousine.com${path}`;
+  return `${DEFAULT_PUBLIC_SITE_URL}${path}`;
 }
 
 export function syncPageSeoAndSchema(activeSlug: ServiceCategorySlug | null): void {
   if (typeof document === 'undefined') return;
 
-  const origin =
-    typeof window !== 'undefined' && window.location?.origin
-      ? window.location.origin
-      : 'https://wakeellimousine.com';
+  // Keep canonical, social, and structured-data URLs anchored to the approved public domain,
+  // including when the app is viewed on a temporary branch or pull-request preview.
+  const origin = DEFAULT_PUBLIC_SITE_URL;
 
   if (!activeSlug) {
     const url = `${origin}/`;
