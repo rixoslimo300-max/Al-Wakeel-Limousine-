@@ -261,27 +261,27 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
       {/* 2. Original Category Editorial Description */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 border-b border-[#C9A96B]/15">
         <div className="max-w-3xl space-y-2 mb-7 text-right">
-          <p className="font-label text-[#C9A96B]">اختيار الفئة يبدأ من احتياج رحلتك</p>
+          <p className="font-label text-[#C9A96B]">اختيار الفئة يبدأ من تفاصيل رحلتك</p>
           <h2 className="font-section-heading text-white">
-            كيف تساعدك فئة {spec.titleAr} في ترتيب انتقالك؟
+            هل فئة {spec.titleAr} هي الاختيار المناسب لرحلتك؟
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 text-right">
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">ما الذي يميزها؟</h3>
+            <h3 className="font-subheading text-[#DFC89B]">ما المشكلة التي تحلها لك؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.natureAr}</p>
           </article>
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">هل تناسب عددكم؟</h3>
+            <h3 className="font-subheading text-[#DFC89B]">هل تستوعب رحلتكم؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.audienceAr}</p>
           </article>
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">أين تستخدمها؟</h3>
+            <h3 className="font-subheading text-[#DFC89B]">إلى أين تناسبك الرحلة؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.tripTypesAr}</p>
           </article>
           <article className="bg-[#152438]/75 border border-[#C9A96B]/20 rounded-2xl p-5 space-y-2">
-            <h3 className="font-subheading text-[#DFC89B]">ماذا تكسب من اختيارها؟</h3>
+            <h3 className="font-subheading text-[#DFC89B]">ما القيمة التي تحصل عليها؟</h3>
             <p className="font-sub text-[#F6F5F1]/85 leading-relaxed">{spec.editorialIntro.customerValueAr}</p>
           </article>
         </div>
@@ -291,9 +291,9 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 border-b border-[#C9A96B]/15">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 text-right">
           <div className="space-y-1.5">
-            <p className="font-label text-[#C9A96B]">معرض التجربة والرحابة</p>
+            <p className="font-label text-[#C9A96B]">شاهد المساحة والتجهيزات قبل الاختيار</p>
             <h2 className="font-section-heading text-white">
-              تجربة السفر والرحابة في فئة {spec.titleAr}
+              تفاصيل تساعدك على تقييم فئة {spec.titleAr}
             </h2>
           </div>
           <button
@@ -398,9 +398,9 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-8 items-start">
           <div className="lg:col-span-7 space-y-5 text-right">
             <div className="space-y-1.5">
-              <p className="font-label text-[#C9A96B]">تفاصيل تصنع فرقًا في رحلتك</p>
+              <p className="font-label text-[#C9A96B]">اختيار مناسب يبدأ من تفاصيل رحلتك</p>
               <h2 className="font-section-heading text-white">
-                قيمة فئة {spec.titleAr} في كل مرحلة من الرحلة
+                كيف تخدمك فئة {spec.titleAr} خلال الرحلة؟
               </h2>
             </div>
 
@@ -422,7 +422,7 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
             <div className="bg-[#152438] border border-[#C9A96B]/30 rounded-2xl p-5 sm:p-6 space-y-4">
               <div className="flex items-center gap-2 text-[#C9A96B] font-label">
                 <ShieldCheck className="w-4 h-4 shrink-0" />
-                <span>معلومات السعة والأهلية المعتمدة</span>
+                <span>تأكد من السعة قبل اختيار الفئة</span>
               </div>
 
               <div className="space-y-2.5 text-sm border-y border-[#C9A96B]/20 py-3.5 tabular-nums">
@@ -446,7 +446,7 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
 
               {/* Pricing Rules */}
               <div className="pt-2 space-y-3">
-                <h3 className="font-subheading text-white">التسعير المعتمد</h3>
+                <h3 className="font-subheading text-white">اعرف تكلفة الرحلة أو اطلب عرض سعر</h3>
                 {spec.supportsAirportFixedPricing ? (
                   <div className="divide-y divide-[#C9A96B]/15 border border-[#C9A96B]/20 rounded-xl overflow-hidden bg-[#101D2D]/70">
                     {AIRPORT_ROUTES.map((route) => {
@@ -514,7 +514,7 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
             <span>إجابات تساعدك تختار الفئة المناسبة</span>
           </div>
           <h2 className="font-section-heading text-white">
-            أسئلة عن حجز فئة {spec.titleAr}
+            إجابات قبل حجز فئة {spec.titleAr}
           </h2>
         </div>
 
@@ -534,7 +534,7 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
       {/* 8. Explore Other Service Categories + Final Contact & Booking CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 space-y-8">
         <div className="space-y-4 text-right">
-          <h2 className="font-subheading text-white">استكشف باقي فئات الخدمة</h2>
+          <h2 className="font-subheading text-white">قارن الفئات قبل اتخاذ قرارك</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {otherCategories.map((other) => (
               <a
@@ -562,9 +562,9 @@ export const ServiceCategoryPage: React.FC<ServiceCategoryPageProps> = ({
 
         <div className="bg-[#152438] border border-[#C9A96B]/30 rounded-2xl p-5 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-4 text-right">
           <div className="space-y-1.5">
-            <h2 className="font-section-heading text-white">جاهز لحجز فئة {spec.titleAr}؟</h2>
+            <h2 className="font-section-heading text-white">هل وجدت الفئة المناسبة لرحلتك؟</h2>
             <p className="font-sub text-[#9A9A96]">
-              ابدأ حجزك بهذه الفئة الآن مع الاحتفاظ بأي تفاصيل رحلة قمت بإدخالها مسبقًا.
+              أدخل تفاصيل الركاب والحقائب والوجهة، وراجع السعر أو اطلب عرضًا قبل إرسال الحجز.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
