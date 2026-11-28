@@ -32,6 +32,9 @@ jobs:
       - name: Regenerate lockfile from package.json
         run: bun install
 
+      - name: Verify frozen lockfile installation
+        run: bun install --frozen-lockfile
+
       - name: Commit updated lockfile
         run: |
           if git diff --quiet -- bun.lock; then
