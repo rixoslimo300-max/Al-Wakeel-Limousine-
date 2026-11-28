@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wakeellimousine.com/sitemap.xml
+Sitemap: https://wakeel-limousine.pages.dev/sitemap.xml
