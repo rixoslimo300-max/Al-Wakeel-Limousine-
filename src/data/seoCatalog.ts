@@ -20,7 +20,7 @@ export interface ServiceSeoEntry {
   ogImageAltAr: string;
 }
 
-export const DEFAULT_PUBLIC_SITE_URL = 'https://wakeel-limousine.pages.dev';
+export const DEFAULT_PUBLIC_SITE_URL = 'https://al-wakeel-limousine.pages.dev';
 
 export function resolveSiteOrigin(explicitOrigin?: string | null): string {
   const candidate = (explicitOrigin || '').trim().replace(/\/+$/, '');
