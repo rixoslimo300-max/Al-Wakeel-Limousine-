@@ -16,7 +16,6 @@ import {
   OFFICIAL_ROUTE_PRICING,
   OFFICIAL_WHATSAPP_BASE_URL,
   SERVICE_CATEGORIES,
-  UNLISTED_ROUTE_QUOTE_MESSAGE_AR,
   calculateTripQuote,
   extractStructuredRouteRules,
 } from '../lib/bookingEngine';
