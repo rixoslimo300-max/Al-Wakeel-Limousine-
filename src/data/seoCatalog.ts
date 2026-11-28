@@ -20,7 +20,7 @@ export interface ServiceSeoEntry {
   ogImageAltAr: string;
 }
 
-export const DEFAULT_PUBLIC_SITE_URL = 'https://wakeellimousine.com';
+export const DEFAULT_PUBLIC_SITE_URL = 'https://wakeel-limousine.pages.dev';
 
 export function resolveSiteOrigin(explicitOrigin?: string | null): string {
   const candidate = (explicitOrigin || '').trim().replace(/\/+$/, '');
@@ -31,12 +31,12 @@ export function resolveSiteOrigin(explicitOrigin?: string | null): string {
 }
 
 export const HOME_SEO = {
-  title: 'ليموزين من الإسكندرية للمطارات | Al Wakeel Limousine',
+  title: 'ليموزين خاص من الإسكندرية للمطارات والرحلات | Al Wakeel Limousine',
   metaDescription:
-    'رتّب ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة أو مطار سفنكس. قارن فئات الخدمة حسب عدد الركاب والحقائب، واعرف سعر المسار المعتمد أو اطلب عرض سعر قبل إرسال الحجز.',
-  ogTitle: 'ليموزين خاص من الإسكندرية إلى المطارات | Al Wakeel Limousine',
+    'خدمات ليموزين خاصة من الإسكندرية إلى مطارات برج العرب والقاهرة وسفنكس، وإلى الساحل الشمالي ووجهات أخرى حسب الطلب. اختر فئة الخدمة وفق عدد الركاب والحقائب، وراجع السعر المعتمد أو اطلب عرض سعر قبل إرسال الحجز.',
+  ogTitle: 'ليموزين خاص من الإسكندرية إلى المطارات والوجهات | Al Wakeel Limousine',
   ogDescription:
-    'تحتاج انتقالًا من الإسكندرية إلى المطار؟ اختر فئة ليموزين تناسب ركابك وحقائبك، وراجع السعر المعتمد أو اطلب عرضًا للمسارات غير المدرجة قبل إرسال الحجز.',
+    'من الإسكندرية إلى المطارات والوجهات الرئيسية، اختر فئة الليموزين الملائمة لعدد الركاب والحقائب. راجع السعر المعتمد أو اطلب عرض سعر للمسارات غير المدرجة قبل إرسال الحجز.',
   ogImagePath: '/og/al-wakeel-home.jpg',
   ogImageAltAr: 'خدمة الليموزين التنفيذي والنقل الخاص من Al Wakeel Limousine',
 };
