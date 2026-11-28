@@ -75,11 +75,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
           </div>
 
           <h1 className="font-hero text-white">
-            رحلتك للمطار تبدأ من بابك… مش من الطريق.
+            موعد طيارتك ثابت… خلّي انتقالك من الإسكندرية محسوب من البداية.
           </h1>
 
           <p className="font-body text-[#F6F5F1]/85 max-w-xl">
-            احجز ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة. حدّد الوجهة والموعد وعدد الركاب والحقائب، واختر فئة الخدمة المناسبة؛ يظهر السعر المعتمد أو يمكنك طلب عرض سعر قبل إرسال الحجز.
+            رتّب ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة. أدخل موعدك ووجهتك وعدد الركاب والحقائب، ليقترح التطبيق فئة تناسب سعة رحلتك ويعرض السعر المعتمد أو يتيح لك طلب عرض سعر قبل إرسال الحجز.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-1">
@@ -97,7 +97,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
               onClick={onNavigateServices}
               className="w-full sm:w-auto min-h-[48px] bg-[#152438] hover:bg-[#1c2f48] text-[#F6F5F1] border border-[#C9A96B]/35 hover:border-[#C9A96B]/70 px-6 py-3 rounded-xl font-medium transition-colors text-sm sm:text-base"
             >
-              اكتشف خدماتنا
+              قارن فئات الخدمة
             </button>
           </div>
         </div>
@@ -142,11 +142,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
                 </div>
 
             <h1 className="font-hero text-white">
-              رحلتك للمطار تبدأ من بابك… مش من الطريق.
+              موعد طيارتك ثابت… خلّي انتقالك من الإسكندرية محسوب من البداية.
             </h1>
 
             <p className="font-body text-[#F6F5F1]/90 leading-relaxed">
-              احجز ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة. حدّد الوجهة والموعد وعدد الركاب والحقائب، واختر فئة الخدمة المناسبة؛ يظهر السعر المعتمد أو يمكنك طلب عرض سعر قبل إرسال الحجز.
+              رتّب ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة. أدخل موعدك ووجهتك وعدد الركاب والحقائب، ليقترح التطبيق فئة تناسب سعة رحلتك ويعرض السعر المعتمد أو يتيح لك طلب عرض سعر قبل إرسال الحجز.
             </p>
 
             <div className="flex flex-wrap items-center gap-3.5 pt-2">
@@ -164,7 +164,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onNavigateServices })
                 onClick={onNavigateServices}
                 className="min-h-[48px] bg-[#101D2D]/80 backdrop-blur-sm hover:bg-[#152438] text-[#F6F5F1] border border-[#C9A96B]/40 hover:border-[#C9A96B]/80 px-6 py-3 rounded-xl font-medium transition-colors text-sm xl:text-base whitespace-nowrap"
               >
-                اكتشف خدماتنا
+                قارن فئات الخدمة
               </button>
             </div>
           </div>
