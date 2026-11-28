@@ -1,0 +1,38 @@
+name: App Quality Checks
+
+on:
+  push:
+    branches:
+      - ai-development
+  pull_request:
+    branches:
+      - ai-development
+
+permissions:
+  contents: read
+
+jobs:
+  app-quality:
+    name: TypeScript and Production Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.12.0"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Check TypeScript
+        run: npm run lint
+
+      - name: Run booking engine tests
+        run: npm run test:booking
+
+      - name: Build production bundle
+        run: npm run build

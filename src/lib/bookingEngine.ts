@@ -6,6 +6,17 @@ export const OFFICIAL_TEL_HREF = 'tel:+201000053774';
 
 export const UNLISTED_ROUTE_QUOTE_MESSAGE_AR = 'يرجى التواصل معنا للحصول على عرض سعر خاص';
 
+/**
+ * Returns a date-input value in the user's local timezone.
+ * Avoids UTC date shifts around midnight in regions ahead of UTC.
+ */
+export function getLocalDateInputValue(date: Date = new Date()): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export interface ServiceCategoryMeta {
   key: ServiceCategoryKey;
   code: string;
@@ -26,7 +37,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Comfort Sedan',
     fullLabelAr: 'Comfort Sedan — سيدان مريحة',
     descriptionAr:
-      'تجربة انتقال خاصة تجمع بين الراحة والعملية، مع خصوصية كاملة طوال الرحلة، لتصل إلى وجهتك بسهولة وهدوء.',
+      'انتقال خاص للأفراد والرحلات الصغيرة حتى 3 ركاب وحقيبتين؛ مناسب لمشاوير الإسكندرية إلى المطارات عندما تريد سيارة مخصصة لك ولرفاقك.',
     legacyVehicleCategoryId: 'sedan-luxury',
     minPassengers: 1,
     maxPassengers: 3,
@@ -38,7 +49,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Premium',
     fullLabelAr: 'Premium — بريميوم',
     descriptionAr:
-      'مستوى أعلى من الخصوصية والحضور والتجربة مع مساحة أرحب للركاب والأمتعة، لتصل إلى وجهتك براحة وتميز.',
+      'مساحة أوسع لرحلاتك الخاصة؛ تناسب حتى 4 ركاب مع 4 حقائب، أو 5–6 ركاب دون حقائب، وفق قواعد السعة المعتمدة.',
     legacyVehicleCategoryId: 'vip-suv',
     minPassengers: 1,
     maxPassengers: 6,
@@ -50,7 +61,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Mini Van',
     fullLabelAr: 'MINI VAN — ميني فان',
     descriptionAr:
-      'فئة عائلية وجماعية رحبة تُخصَّص تلقائيًا عند الحاجة إلى استيعاب أمتعة أكبر (5 حقائب فأكثر) أو مجموعات حتى 10 ركاب.',
+      'فئة للمجموعات والحمولات الأكبر؛ يحددها النظام وفق عدد الركاب والحقائب معًا، لتجميع الرحلة في مركبة واحدة متى سمحت السعة المعتمدة.',
     legacyVehicleCategoryId: 'family-van',
     minPassengers: 1,
     maxPassengers: 10,
@@ -62,7 +73,7 @@ export const SERVICE_CATEGORIES: Record<ServiceCategoryKey, ServiceCategoryMeta>
     titleEn: 'Premium Mini Van',
     fullLabelAr: 'Premium Mini Van — ميني فان بريميوم',
     descriptionAr:
-      'فئة ميني فان بريميوم مستقلة فاخرة متاحة عند الطلب حتى 4 ركاب و5 حقائب كحد أقصى — السعر بعد مراجعة تفاصيل الرحلة.',
+      'فئة ضيافة مستقلة بمقصورة أوسع، متاحة حتى 4 ركاب و5 حقائب كحد أقصى؛ ويُحدد سعرها بعد مراجعة تفاصيل الرحلة.',
     legacyVehicleCategoryId: 'premium-minivan',
     minPassengers: 1,
     maxPassengers: 4,
@@ -94,15 +105,15 @@ export interface DailyRentalPackage {
   descriptionAr: string;
 }
 
-export const DAILY_RENTAL_HEADING_AR = 'سيارتك الخاصة طوال اليوم';
+export const DAILY_RENTAL_HEADING_AR = 'يومك مليان مشاوير؟ اجمعها في باقة تأجير يومي داخل الإسكندرية';
 export const DAILY_RENTAL_INTRO_AR =
-  'استمتع بحرية التنقل داخل الإسكندرية بسيارة خاصة تناسب جدولك اليومي، سواء للمشاوير المتعددة أو الاجتماعات أو الارتباطات الشخصية، وفق مدة الاستخدام والمسافة المحددة لكل باقة.';
+  'بدل ما ترتب سيارة لكل مشوار، اجمع اجتماعاتك وتنقلاتك في باقة واحدة داخل الإسكندرية. اختر 8 أو 12 ساعة، وراجع السعر وحدود المسافة والاستخدام قبل إرسال الطلب.';
 
 export const DAILY_RENTAL_PACKAGES: DailyRentalPackage[] = [
   {
     id: 'daily-rental-8h',
     titleEn: 'Daily Rental – 8 Hours',
-    titleAr: 'تأجير يومي – 8 ساعات',
+    titleAr: '8 ساعات تجمع مشاوير يومك',
     priceEgp: 2800,
     maxHours: 8,
     maxKm: 120,
@@ -110,12 +121,12 @@ export const DAILY_RENTAL_PACKAGES: DailyRentalPackage[] = [
     distanceLabelAr: 'حتى 120 كم',
     scopeLabelAr: 'داخل الإسكندرية',
     descriptionAr:
-      'استمتع بحرية التنقل داخل الإسكندرية بسيارة خاصة تناسب جدولك اليومي، سواء للمشاوير المتعددة أو الاجتماعات أو الارتباطات الشخصية، وفق مدة الاستخدام والمسافة المحددة لهذه الباقة.',
+      'لو جدولك فيه أكثر من مشوار أو اجتماع، استخدم سيارة واحدة داخل الإسكندرية لمدة تصل إلى 8 ساعات ومسافة حتى 120 كم، بسعر الباقة المعلن قبل إرسال الطلب.',
   },
   {
     id: 'daily-rental-12h',
     titleEn: 'Daily Rental – 12 Hours',
-    titleAr: 'تأجير يومي – 12 ساعة',
+    titleAr: '12 ساعة ليوم طويل من الالتزامات',
     priceEgp: 3600,
     maxHours: 12,
     maxKm: 150,
@@ -123,7 +134,7 @@ export const DAILY_RENTAL_PACKAGES: DailyRentalPackage[] = [
     distanceLabelAr: 'حتى 150 كم',
     scopeLabelAr: 'داخل الإسكندرية',
     descriptionAr:
-      'استمتع بحرية التنقل داخل الإسكندرية بسيارة خاصة تناسب جدولك اليومي، سواء للمشاوير المتعددة أو الاجتماعات أو الارتباطات الشخصية، وفق مدة الاستخدام والمسافة المحددة لهذه الباقة.',
+      'لما يكون يومك أطول ومشاويرك متعددة، تتيح لك الباقة استخدام السيارة حتى 12 ساعة ومسافة تصل إلى 150 كم داخل الإسكندرية، مع معرفة السعر وحدود الاستخدام قبل إرسال الطلب.',
   },
 ];
 
@@ -575,7 +586,7 @@ export function evaluateVehicleCapacity(params: {
         : null;
 
   const suvDisabledReason = allocation.forcedMiniVan
-    ? 'تتطلب السعة الحالية مركبة أكبر من فئة ميني فان.'
+    ? 'فئة SUV غير متاحة لهذه السعة؛ تم تخصيص فئة ميني فان المناسبة تلقائيًا.'
     : null;
 
   const miniVanDisabledReason =

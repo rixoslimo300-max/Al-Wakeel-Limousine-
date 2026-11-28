@@ -1,47 +1,61 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Helper functions
     function isAuthenticated() {
       return request.auth != null;
     }
 
     function isAdmin() {
       return isAuthenticated() &&
-        request.auth.token.email == 'eyad.marine30@gmail.com';
+        request.auth.token.email == 'eyad.marine30@gmail.com' &&
+        request.auth.token.email_verified == true;
     }
 
     function isBookingOwner(resData) {
-      return isAuthenticated() && (
-        resData.customerId == request.auth.uid ||
-        (request.auth.token.email != null && resData.customerEmail == request.auth.token.email)
-      );
+      return isAuthenticated() &&
+        resData.customerId == request.auth.uid;
     }
 
     function isValidBookingPayload() {
       let data = request.resource.data;
-      return data.customerName is string &&
-        data.customerName.size() > 0 &&
-        data.customerName.size() <= 120 &&
-        data.customerPhone is string &&
-        data.customerPhone.size() >= 7 &&
-        data.customerPhone.size() <= 35 &&
-        data.pickupLocation is string &&
-        data.pickupLocation.size() > 0 &&
-        data.pickupLocation.size() <= 250 &&
-        data.dropoffLocation is string &&
-        data.dropoffLocation.size() > 0 &&
-        data.dropoffLocation.size() <= 250 &&
-        data.pickupDateTime is string &&
-        data.passengersCount is number &&
-        data.passengersCount >= 1 &&
-        data.passengersCount <= 50 &&
+      return isAuthenticated() &&
+        data.keys().hasAll([
+          'customerId', 'customerName', 'customerPhone', 'customerEmail',
+          'serviceId', 'serviceName', 'vehicleCategoryId', 'pickupLocation',
+          'dropoffLocation', 'pickupDateTime', 'passengersCount', 'luggageCount',
+          'notes', 'status', 'estimatedPrice', 'paymentStatus', 'createdAt',
+          'serviceCategory', 'serviceCategoryLabel', 'pricingType', 'assignmentStatus'
+        ]) &&
+        data.keys().hasOnly([
+          'customerId', 'customerName', 'customerPhone', 'customerEmail',
+          'serviceId', 'serviceName', 'vehicleCategoryId', 'pickupLocation',
+          'dropoffLocation', 'pickupDateTime', 'passengersCount', 'luggageCount',
+          'notes', 'status', 'estimatedPrice', 'paymentStatus', 'createdAt',
+          'serviceCategory', 'serviceCategoryLabel', 'pricingType', 'assignmentStatus'
+        ]) &&
+        data.customerId == request.auth.uid &&
+        data.customerName is string && data.customerName.size() > 0 && data.customerName.size() <= 120 &&
+        data.customerPhone is string && data.customerPhone.size() >= 7 && data.customerPhone.size() <= 35 &&
+        data.customerEmail is string && data.customerEmail.size() <= 254 &&
+        data.serviceId is string && data.serviceId.size() > 0 && data.serviceId.size() <= 100 &&
+        data.serviceName is string && data.serviceName.size() > 0 && data.serviceName.size() <= 250 &&
+        data.vehicleCategoryId is string && data.vehicleCategoryId.size() <= 80 &&
+        data.pickupLocation is string && data.pickupLocation.size() > 0 && data.pickupLocation.size() <= 250 &&
+        data.dropoffLocation is string && data.dropoffLocation.size() > 0 && data.dropoffLocation.size() <= 250 &&
+        data.pickupDateTime is string && data.pickupDateTime.size() >= 10 && data.pickupDateTime.size() <= 40 &&
+        data.passengersCount is number && data.passengersCount >= 1 && data.passengersCount <= 50 &&
+        data.luggageCount is number && data.luggageCount >= 0 && data.luggageCount <= 50 &&
+        data.notes is string && data.notes.size() <= 2000 &&
         data.status == 'pending_review' &&
-        (!isAuthenticated() ? data.customerId == 'guest' : (data.customerId == request.auth.uid || data.customerId == 'guest'));
+        data.estimatedPrice is number && data.estimatedPrice >= 0 && data.estimatedPrice <= 1000000 &&
+        data.paymentStatus == 'unpaid' &&
+        data.createdAt is string && data.createdAt.size() >= 10 && data.createdAt.size() <= 40 &&
+        data.serviceCategory in ['sedan_comfort', 'suv_premium', 'mini_van', 'mini_van_premium'] &&
+        data.serviceCategoryLabel is string && data.serviceCategoryLabel.size() > 0 && data.serviceCategoryLabel.size() <= 120 &&
+        data.pricingType in ['fixed', 'quote_required'] &&
+        data.assignmentStatus == 'unassigned';
     }
 
-    // Public catalog collections: Publicly readable, admin-only writable
     match /services/{serviceId} {
       allow read: if true;
       allow write: if isAdmin();
@@ -57,33 +71,24 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Drivers: Internal operational fleet directory
     match /drivers/{driverId} {
       allow read, write: if isAdmin();
     }
 
-    // Connectivity test probe
     match /test/{docId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Customer Bookings: Hardened access control
-    // - Creation: Validated submission allowed for customers and guest bookings
-    // - Read: Restricted to verified admin or document owner
-    // - Update: Admin full management, or owner self-cancellation
-    // - Delete: Restricted to verified admin
     match /bookings/{bookingId} {
       allow create: if isValidBookingPayload();
-      
       allow read: if isAdmin() || isBookingOwner(resource.data);
-
       allow update: if isAdmin() || (
         isBookingOwner(resource.data) &&
+        resource.data.status != 'cancelled' &&
         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
         request.resource.data.status == 'cancelled'
       );
-
       allow delete: if isAdmin();
     }
   }

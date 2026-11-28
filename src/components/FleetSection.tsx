@@ -153,13 +153,13 @@ export const FleetSection: React.FC<FleetSectionProps> = ({
           <div className="max-w-3xl space-y-2.5 text-right">
             <div className="flex items-center gap-2 text-[#C9A96B] font-label">
               <span className="w-5 h-px bg-[#C9A96B]/70 shrink-0" aria-hidden="true" />
-              <span>فئات الخدمة المعتمدة</span>
+              <span>اختيار فئة الليموزين</span>
             </div>
             <h2 className="font-section-heading text-white">
-              اختر مستوى الخدمة المناسب لرحلتك، ونحن نتولى تخصيص السيارة
+              عدد الركاب والحقائب يحدد الاختيار… مش اسم السيارة
             </h2>
             <p className="font-body text-[#9A9A96] leading-relaxed">
-              تقدم الوكيل لخدمات الليموزين أربع فئات واضحة تلائم السفر الفردي، الضيافة التنفيذية، والعائلات والمجموعات. اضغط على أي بطاقة لاستكشاف تفاصيل الفئة ومزاياها وسعتها.
+              من ليموزين سيدان للمسافر الفردي إلى فئات بريميوم وميني فان للعائلات والمجموعات، قارن السعة الفعلية للركاب والحقائب واختر مستوى الخدمة المناسب لرحلتك من الإسكندرية إلى المطارات أو الوجهات المتاحة. يظهر السعر المعتمد للمسارات المسعّرة، ويمكنك طلب عرض سعر لغيرها.
             </p>
           </div>
         </div>

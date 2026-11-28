@@ -6,7 +6,7 @@ import { ServicesSection, AirportTransferSelection } from './components/Services
 import { DailyRentalSection } from './components/DailyRentalSection';
 import { WhyAlWakeelSection } from './components/WhyAlWakeelSection';
 import { FleetSection } from './components/FleetSection';
-import { BookingModal, BookingFlowMode } from './components/BookingModal';
+import type { BookingFlowMode } from './components/BookingModal';
 import { OfflineIndicator } from './components/OfflineIndicator';
 
 const LazyCustomerBookings = React.lazy(() =>
@@ -29,19 +29,17 @@ import {
   getServiceCategoryPath,
 } from './data/seoCatalog';
 import { syncPageSeoAndSchema } from './lib/seoAndShare';
-import {
-  db,
-  collection,
-  getDocs,
-  setDoc,
-  doc,
-  testConnection,
-  isOfflineOrNetworkError,
-} from './lib/firebase';
+
 
 const LazyServiceCategoryPage = React.lazy(() =>
   import('./components/ServiceCategoryPage').then((mod) => ({
     default: mod.ServiceCategoryPage,
+  }))
+);
+
+const LazyBookingModal = React.lazy(() =>
+  import('./components/BookingModal').then((mod) => ({
+    default: mod.BookingModal,
   }))
 );
 
@@ -93,6 +91,7 @@ export default function App() {
     );
   });
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
+  const [hasMountedBooking, setHasMountedBooking] = useState(false);
 
   const [bookingMode, setBookingMode] = useState<BookingFlowMode>('transfer');
   const [preselectedDailyPackageId, setPreselectedDailyPackageId] = useState<DailyRentalPackageId | null>(null);
@@ -136,6 +135,10 @@ export default function App() {
   }, [activeTab, activeCategorySlug]);
 
   useEffect(() => {
+    if (isBookingOpen) setHasMountedBooking(true);
+  }, [isBookingOpen]);
+
+  useEffect(() => {
     let cancelled = false;
 
     const loadCatalog = async () => {
@@ -147,6 +150,12 @@ export default function App() {
       }
 
       try {
+        const {
+          db,
+          collection,
+          getDocs,
+          testConnection,
+        } = await import('./lib/firebase');
         const connected = await testConnection();
         if (!connected || cancelled) return;
 
@@ -160,7 +169,9 @@ export default function App() {
 
         let nextServices = initialServices;
         if (servicesSnapshot.empty) {
-          await Promise.all(initialServices.map((s) => setDoc(doc(db, 'services', s.id), s)));
+          // Public catalog loading is read-only; seed data remains local until an
+          // authenticated administrative setup process writes it.
+          nextServices = initialServices;
         } else {
           const loaded: Service[] = [];
           servicesSnapshot.forEach((d) => loaded.push(d.data() as Service));
@@ -182,7 +193,7 @@ export default function App() {
 
         let nextVehicles = initialVehicles;
         if (vehiclesSnapshot.empty) {
-          await Promise.all(initialVehicles.map((v) => setDoc(doc(db, 'vehicles', v.id), v)));
+          nextVehicles = initialVehicles;
         } else {
           const loaded: Vehicle[] = [];
           vehiclesSnapshot.forEach((d) => loaded.push(d.data() as Vehicle));
@@ -195,7 +206,7 @@ export default function App() {
         const structuredLoaded = loadedRules.filter((r) => Boolean(r.origin && r.destination));
 
         if (structuredLoaded.length === 0) {
-          await Promise.all(initialPricingRules.map((r) => setDoc(doc(db, 'pricingRules', r.id), r)));
+          nextRules = initialPricingRules;
         } else {
           nextRules = structuredLoaded;
         }
@@ -207,7 +218,10 @@ export default function App() {
           writeCatalogCache(nextServices, nextVehicles, nextRules);
         }
       } catch (error) {
-        if (isOfflineOrNetworkError(error)) {
+        const isOffline = await import('./lib/firebase')
+          .then(({ isOfflineOrNetworkError }) => isOfflineOrNetworkError(error))
+          .catch(() => false);
+        if (isOffline) {
           console.warn('Operating with cached/local catalog data because Firestore is unreachable.');
         } else {
           console.warn('Fallback to local catalog data:', error);
@@ -494,7 +508,21 @@ export default function App() {
         onOpenCategoryPage={handleOpenCategoryPage}
       />
 
-      <BookingModal
+      {hasMountedBooking && (
+        <Suspense
+          fallback={
+            isBookingOpen ? (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1522]/85 backdrop-blur-md text-[#C9A96B] text-sm"
+                role="status"
+                aria-live="polite"
+              >
+                جاري تجهيز نموذج الحجز...
+              </div>
+            ) : null
+          }
+        >
+          <LazyBookingModal
         isOpen={isBookingOpen}
         onClose={() => setIsBookingOpen(false)}
         services={services}
@@ -517,7 +545,9 @@ export default function App() {
           setActiveTab('my-bookings');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-      />
+          />
+        </Suspense>
+      )}
 
       <WhatsAppFab />
       <OfflineIndicator />

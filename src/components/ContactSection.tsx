@@ -5,7 +5,7 @@ import { RevealBlock, LuxuryTiltCard } from './MotionCard';
 const OFFICIAL_PHONE_DISPLAY = '+201000053774';
 const OFFICIAL_TEL_HREF = 'tel:+201000053774';
 const OFFICIAL_WHATSAPP_URL = 'https://wa.me/201000053774';
-const OFFICIAL_ADDRESS_AR = 'أبراج قمراية – رشدي – طريق الجيش – ستانلي – الإسكندرية';
+const OFFICIAL_ADDRESS_AR = 'أبراج قمراية – رشدي – طريق الجيش – الإسكندرية';
 
 const WhatsAppGlyph: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -27,20 +27,13 @@ export const ContactSection: React.FC = () => {
               <span>التواصل الرسمي · الوكيل لخدمات الليموزين</span>
             </div>
             <h2 className="font-section-heading text-white">
-              تواصل معنا
+              خلّي تفاصيل رحلتك أوضح قبل الحجز
             </h2>
             <p className="font-body text-[#9A9A96]">
-              مكتب الحجز والتنسيق التنفيذي جاهز لتلقي طلباتكم وتأكيد تفاصيل رحلاتكم عبر الهاتف أو واتساب.
+              تحتاج تعرف أنسب فئة أو سعر مسارك من الإسكندرية إلى المطارات؟ تواصل مع مكتب الحجز لمراجعة تفاصيل الرحلة قبل إرسال الطلب.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 text-right md:text-left">
-            <span className="font-latin text-xs tracking-[0.14em] uppercase text-[#C9A96B]" dir="ltr">
-              Since 2014
-            </span>
-            <span className="text-[#C9A96B]/40" aria-hidden="true">·</span>
-            <span className="font-sub text-[#91B9C8]">خبرة تمتد منذ عام 2014</span>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
@@ -56,9 +49,9 @@ export const ContactSection: React.FC = () => {
                   <PhoneCall className="w-5 h-5 stroke-[1.75]" />
                 </div>
                 <div>
-                  <h3 className="font-card-heading text-white">رقم التواصل</h3>
+                  <h3 className="font-card-heading text-white">محتار بين فئتين أو محتاج عرض سعر؟</h3>
                   <p className="font-sub text-[#9A9A96] mt-1">
-                    اتصال هاتفي مباشر بمكتب الحجز والتنسيق.
+                    اتصل لمراجعة عدد الركاب والحقائب والوجهة، ومعرفة السعر أو طلب عرض للمسار غير المدرج.
                   </p>
                 </div>
               </div>
@@ -89,7 +82,7 @@ export const ContactSection: React.FC = () => {
                 <div>
                   <h3 className="font-card-heading text-white">واتساب</h3>
                   <p className="font-sub text-[#9A9A96] mt-1">
-                    محادثة فورية وتنسيق مباشر عبر الرقم الرسمي للشركة.
+                    أرسل نقطة التحرك والوجهة والموعد وعدد الركاب والحقائب، لمراجعة المسار والسعر مع مكتب الحجز.
                   </p>
                 </div>
               </div>
@@ -102,7 +95,7 @@ export const ContactSection: React.FC = () => {
                   className="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
                 >
                   <WhatsAppGlyph className="w-4 h-4 shrink-0" />
-                  <span>تواصل معنا عبر واتساب</span>
+                  <span>خلّي تفاصيل رحلتك أوضح قبل الحجز عبر واتساب</span>
                 </a>
               </div>
             </LuxuryTiltCard>
@@ -121,7 +114,7 @@ export const ContactSection: React.FC = () => {
                 <div>
                   <h3 className="font-card-heading text-white">عنواننا</h3>
                   <p className="font-sub text-[#9A9A96] mt-1">
-                    المقر الرسمي لخدمات الوكيل لليموزين.
+                    عنوان مكتب الوكيل لخدمات الليموزين في رشدي، الإسكندرية.
                   </p>
                 </div>
               </div>

@@ -5,6 +5,7 @@ import {
   STANDARD_JOURNEY_LOCATIONS,
   UNLISTED_ROUTE_QUOTE_MESSAGE_AR,
   calculateTripQuote,
+  getLocalDateInputValue,
   SERVICE_CATEGORIES,
 } from '../lib/bookingEngine';
 
@@ -252,7 +253,7 @@ export const QuickBookingBar: React.FC<QuickBookingBarProps> = ({
                 <input
                   id="qb-date"
                   type="date"
-                  min={new Date().toISOString().split('T')[0]}
+                  min={getLocalDateInputValue()}
                   value={travelDate}
                   onChange={(e) => setTravelDate(e.target.value)}
                   className="w-full min-h-[46px] bg-[#101D2D] border border-[#C9A96B]/25 focus:border-[#C9A96B] rounded-xl pr-10 pl-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none"

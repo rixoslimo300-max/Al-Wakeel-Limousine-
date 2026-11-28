@@ -92,8 +92,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   }, []);
 
   const isAdmin =
-    Boolean(user?.email) &&
-    user?.email === 'eyad.marine30@gmail.com';
+    user?.email === 'eyad.marine30@gmail.com' &&
+    user.emailVerified === true;
 
   useEffect(() => {
     if (!isAdmin) {

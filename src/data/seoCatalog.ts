@@ -18,10 +18,6 @@ export interface ServiceSeoEntry {
   ogDescription: string;
   ogImagePath: `/og/${ServiceCategorySlug}.jpg`;
   ogImageAltAr: string;
-  fixedOffers?: Array<{
-    nameAr: string;
-    priceEgp: number;
-  }>;
 }
 
 export const DEFAULT_PUBLIC_SITE_URL = 'https://wakeellimousine.com';
@@ -35,12 +31,12 @@ export function resolveSiteOrigin(explicitOrigin?: string | null): string {
 }
 
 export const HOME_SEO = {
-  title: 'Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر',
+  title: 'ليموزين من الإسكندرية للمطارات | Al Wakeel Limousine',
   metaDescription:
-    'الوكيل لخدمات الليموزين منذ عام 2014 – خدمات تنقل خاصة من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي بفئات خدمة تناسب احتياجك.',
-  ogTitle: 'Al Wakeel Limousine – الوكيل لخدمات الليموزين والنقل الفاخر',
+    'رتّب ليموزين خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة أو مطار سفنكس. قارن فئات الخدمة حسب عدد الركاب والحقائب، واعرف سعر المسار المعتمد أو اطلب عرض سعر قبل إرسال الحجز.',
+  ogTitle: 'ليموزين خاص من الإسكندرية إلى المطارات | Al Wakeel Limousine',
   ogDescription:
-    'تنقل خاص بخصوصية كاملة من الإسكندرية إلى المطارات والمدن والوجهات السياحية منذ عام 2014. اختر فئة الخدمة المناسبة لرحلتك.',
+    'تحتاج انتقالًا من الإسكندرية إلى المطار؟ اختر فئة ليموزين تناسب ركابك وحقائبك، وراجع السعر المعتمد أو اطلب عرضًا للمسارات غير المدرجة قبل إرسال الحجز.',
   ogImagePath: '/og/al-wakeel-home.jpg',
   ogImageAltAr: 'خدمة الليموزين التنفيذي والنقل الخاص من Al Wakeel Limousine',
 };
@@ -52,19 +48,14 @@ export const SERVICE_SEO_CATALOG: Record<ServiceCategorySlug, ServiceSeoEntry> =
     path: '/services/sedan-comfort',
     nameAr: 'سيدان مريحة',
     nameEn: 'Comfort Sedan',
-    seoTitle: 'فئة سيدان مريحة | الوكيل لخدمات الليموزين',
+    seoTitle: 'ليموزين سيدان من الإسكندرية إلى المطارات | الوكيل',
     metaDescription:
-      'خدمة ليموزين فئة سيدان مريحة للتنقل الخاص من الإسكندرية إلى المطارات والمدن حتى 3 ركاب وحقيبتين بخصوصية كاملة وأسعار ثابتة للمطارات.',
-    ogTitle: 'فئة سيدان مريحة – تنقل خاص من Al Wakeel Limousine',
+      'ليموزين سيدان خاص من الإسكندرية إلى مطار برج العرب أو مطار القاهرة أو مطار سفنكس، حتى 3 ركاب وحقيبتين. راجع سعر المسار المعتمد قبل إرسال الحجز.',
+    ogTitle: 'سيدان خاصة للمطار حتى 3 ركاب | Al Wakeel Limousine',
     ogDescription:
-      'تجربة انتقال عملية وأنيقة بخصوصية كاملة لرحلات الأعمال والمطارات حتى 3 ركاب وحقيبتين مع انتظار مجاني في المطار.',
+      'رحلة خاصة للأفراد والمجموعات الصغيرة من الإسكندرية إلى المطارات، مع سعة واضحة وسعر للمسارات المعتمدة قبل تأكيد الطلب.',
     ogImagePath: '/og/sedan-comfort.jpg',
     ogImageAltAr: 'فئة سيدان مريحة للتنقل الخاص من الوكيل لخدمات الليموزين',
-    fixedOffers: [
-      { nameAr: 'الإسكندرية ↔ مطار برج العرب الدولي (اتجاه واحد)', priceEgp: 850 },
-      { nameAr: 'الإسكندرية ↔ مطار القاهرة الدولي (اتجاه واحد)', priceEgp: 1850 },
-      { nameAr: 'الإسكندرية ↔ مطار سفنكس الدولي (اتجاه واحد)', priceEgp: 1850 },
-    ],
   },
   premium: {
     key: 'suv_premium',
@@ -72,19 +63,14 @@ export const SERVICE_SEO_CATALOG: Record<ServiceCategorySlug, ServiceSeoEntry> =
     path: '/services/premium',
     nameAr: 'بريميوم',
     nameEn: 'Premium',
-    seoTitle: 'فئة بريميوم | الوكيل لخدمات الليموزين',
+    seoTitle: 'ليموزين بريميوم من الإسكندرية إلى المطارات | الوكيل',
     metaDescription:
-      'خدمة ليموزين فئة بريميوم لحضور تنفيذي وخصوصية أعلى ومساحة أرحب حتى 4 ركاب بالأمتعة أو 5–6 ركاب بدون حقائب في الإسكندرية والمطارات.',
-    ogTitle: 'فئة بريميوم – مستوى أعلى من الخصوصية والراحة | Al Wakeel Limousine',
+      'اختر ليموزين بريميوم من الإسكندرية إلى المطارات لمساحة تناسب حتى 4 ركاب و4 حقائب، أو 5–6 ركاب دون حقائب. راجع سعر المسار المعتمد قبل إرسال الحجز.',
+    ogTitle: 'فئة بريميوم بمساحة أوسع للركاب والحقائب | Al Wakeel Limousine',
     ogDescription:
-      'رحلة خاصة بمساحة أرحب وحضور راقٍ للمطارات والسفر بين المحافظات مع سائقين محترفين وأسعار واضحة.',
+      'اختر فئة بريميوم لرحلتك الخاصة من الإسكندرية إلى المطارات أو بين المدن، وفق حدود السعة المعتمدة وسعر المسار الظاهر بالتطبيق.',
     ogImagePath: '/og/premium.jpg',
     ogImageAltAr: 'فئة بريميوم للتنقل التنفيذي الخاص من الوكيل لخدمات الليموزين',
-    fixedOffers: [
-      { nameAr: 'الإسكندرية ↔ مطار برج العرب الدولي (اتجاه واحد)', priceEgp: 1200 },
-      { nameAr: 'الإسكندرية ↔ مطار القاهرة الدولي (اتجاه واحد)', priceEgp: 2200 },
-      { nameAr: 'الإسكندرية ↔ مطار سفنكس الدولي (اتجاه واحد)', priceEgp: 2200 },
-    ],
   },
   'mini-van': {
     key: 'mini_van',
@@ -92,12 +78,12 @@ export const SERVICE_SEO_CATALOG: Record<ServiceCategorySlug, ServiceSeoEntry> =
     path: '/services/mini-van',
     nameAr: 'ميني فان',
     nameEn: 'Mini Van',
-    seoTitle: 'فئة ميني فان | الوكيل لخدمات الليموزين',
+    seoTitle: 'ليموزين ميني فان للعائلات والمجموعات من الإسكندرية | الوكيل',
     metaDescription:
-      'خدمة ليموزين فئة ميني فان المصممة للعائلات والمجموعات والأمتعة الكبيرة حتى 10 ركاب أو 5 حقائب فأكثر من الإسكندرية إلى المطارات والمدن.',
-    ogTitle: 'فئة ميني فان – رحابة للمجموعات والأمتعة | Al Wakeel Limousine',
+      'ليموزين ميني فان للعائلات والمجموعات من الإسكندرية إلى المطارات والوجهات المتاحة. يحدد النظام التخصيص وفق عدد الركاب والحقائب معًا، حتى 10 ركاب وفق حدود السعة.',
+    ogTitle: 'ميني فان للعائلات والمجموعات | Al Wakeel Limousine',
     ogDescription:
-      'تنقل عائلي وجماعي مريح دون قلق بشأن الحقائب أو عدد الركاب حتى 10 ركاب مع تكييف كامل وخصوصية تامة.',
+      'اجمع مجموعتك في رحلة واحدة عندما تسمح السعة. يوازن نظام الحجز بين عدد الركاب والحقائب ويعرض السعر بعد مراجعة تفاصيل المسار.',
     ogImagePath: '/og/mini-van.jpg',
     ogImageAltAr: 'فئة ميني فان للعائلات والمجموعات من الوكيل لخدمات الليموزين',
   },
@@ -107,12 +93,12 @@ export const SERVICE_SEO_CATALOG: Record<ServiceCategorySlug, ServiceSeoEntry> =
     path: '/services/mini-van-premium',
     nameAr: 'ميني فان بريميوم',
     nameEn: 'Premium Mini Van',
-    seoTitle: 'فئة ميني فان بريميوم | الوكيل لخدمات الليموزين',
+    seoTitle: 'ليموزين ميني فان بريميوم حتى 4 ركاب | الوكيل',
     metaDescription:
-      'فئة ميني فان بريميوم من الوكيل لخدمات الليموزين: رحابة استثنائية ومستوى أعلى من الفخامة لرحلات حتى 4 ركاب و5 حقائب كحد أقصى.',
-    ogTitle: 'فئة ميني فان بريميوم – رحابة وفخامة كبار الشخصيات | Al Wakeel Limousine',
+      'ليموزين ميني فان بريميوم من الإسكندرية للرحلات الخاصة حتى 4 ركاب و5 حقائب. أرسل تفاصيل المسار والموعد لمراجعة السعر قبل تأكيد الحجز.',
+    ogTitle: 'ميني فان بريميوم لضيافة خاصة | Al Wakeel Limousine',
     ogDescription:
-      'تجربة انتقال راقية تجمع بين اتساع المقصورة وأعلى درجات الفخامة والراحة حتى 4 ركاب و5 حقائب كحد أقصى.',
+      'مقصورة ضيافة مستقلة بمساحة أوسع حتى 4 ركاب و5 حقائب كحد أقصى، مع تحديد السعر بعد مراجعة تفاصيل الرحلة.',
     ogImagePath: '/og/mini-van-premium.jpg',
     ogImageAltAr: 'فئة ميني فان بريميوم الفاخرة من الوكيل لخدمات الليموزين',
   },
@@ -192,14 +178,11 @@ export function buildHomeSchemaGraph(siteOriginInput?: string | null): Record<st
         url: `${origin}/`,
         image: `${origin}${HOME_SEO.ogImagePath}`,
         description:
-          'خدمات ليموزين وتنقل خاص تنفيذي منذ عام 2014، من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي وجميع المحافظات.',
-        foundingDate: '2014',
+          'خدمات ليموزين وتنقل خاص تنفيذي من الإسكندرية إلى مطار برج العرب ومطار القاهرة ومطار سفنكس والساحل الشمالي.',
         telephone: '+201000053774',
-        email: 'info@wakeellimousine.com',
-        priceRange: '850 EGP - 3600 EGP',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش – ستانلي',
+          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش',
           addressLocality: 'الإسكندرية',
           addressCountry: 'EG',
         },
@@ -273,17 +256,6 @@ export function buildServiceCategorySchemaGraph(
     areaServed: ['الإسكندرية', 'مطار برج العرب الدولي', 'مطار القاهرة الدولي', 'مطار سفنكس الدولي', 'الساحل الشمالي'],
   };
 
-  if (entry.fixedOffers && entry.fixedOffers.length > 0) {
-    serviceNode.offers = entry.fixedOffers.map((offer) => ({
-      '@type': 'Offer',
-      name: `${entry.nameAr} — ${offer.nameAr}`,
-      price: offer.priceEgp,
-      priceCurrency: 'EGP',
-      availability: 'https://schema.org/InStock',
-      url: pageUrl,
-    }));
-  }
-
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -293,10 +265,9 @@ export function buildServiceCategorySchemaGraph(
         name: 'Al Wakeel Limousine | الوكيل لخدمات الليموزين',
         url: `${origin}/`,
         telephone: '+201000053774',
-        email: 'info@wakeellimousine.com',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش – ستانلي',
+          streetAddress: 'أبراج قمراية – رشدي – طريق الجيش',
           addressLocality: 'الإسكندرية',
           addressCountry: 'EG',
         },

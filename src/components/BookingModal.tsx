@@ -39,6 +39,7 @@ import {
   buildDailyRentalWhatsAppMessage,
   buildDailyRentalWhatsAppUrl,
   evaluateVehicleCapacity,
+  getLocalDateInputValue,
 } from '../lib/bookingEngine';
 import { REPRESENTATIVE_IMAGES_BY_MODEL_ID } from '../data/verifiedFleet';
 import {
@@ -632,7 +633,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       await addDoc(collection(db, 'bookings'), bookingRecord);
       onBookingSubmitted?.();
     } catch (saveErr) {
-      console.warn('Booking stored locally / proceeding with WhatsApp dispatch:', saveErr);
+      console.error('Booking persistence failed; WhatsApp dispatch was blocked:', saveErr);
+      setConsentError(
+        'تعذر حفظ طلب الحجز حاليًا. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى بعد التحقق من اتصال الإنترنت.'
+      );
+      setIsSubmitting(false);
+      return;
     }
 
     const message = buildStructuredWhatsAppBookingMessage(formData, pricingSummary);
@@ -656,7 +662,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     e.preventDefault();
     if (isSubmitting) return;
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = getLocalDateInputValue();
     const nextErr: Record<string, string> = {};
     if (!dailyUsageDate.trim()) {
       nextErr.dailyUsageDate = 'حدد تاريخ الاستخدام.';
@@ -727,7 +733,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       await addDoc(collection(db, 'bookings'), bookingRecord);
       onBookingSubmitted?.();
     } catch (saveErr) {
-      console.warn('Daily rental booking stored locally / proceeding with WhatsApp:', saveErr);
+      console.error('Daily rental persistence failed; WhatsApp dispatch was blocked:', saveErr);
+      setDailyErrors((prev) => ({
+        ...prev,
+        general:
+          'تعذر حفظ طلب التأجير اليومي حاليًا. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى بعد التحقق من اتصال الإنترنت.',
+      }));
+      setIsSubmitting(false);
+      return;
     }
 
     const message = buildDailyRentalWhatsAppMessage({
@@ -987,7 +1000,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     <input
                       id="daily-date"
                       type="date"
-                      min={new Date().toISOString().split('T')[0]}
+                      min={getLocalDateInputValue()}
                       value={dailyUsageDate}
                       onChange={(e) => {
                         setDailyUsageDate(e.target.value);
@@ -1287,7 +1300,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                           id="bk-date"
                           type="date"
                           required
-                          min={new Date().toISOString().split('T')[0]}
+                          min={getLocalDateInputValue()}
                           value={formData.tripDate}
                           onChange={(e) => updateField('tripDate', e.target.value)}
                           className={`w-full min-h-[48px] bg-[#101D2D] border rounded-xl pr-10 pl-4 py-2.5 text-sm text-white focus:outline-none ${
@@ -1445,7 +1458,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                               <input
                                 id="bk-return-date"
                                 type="date"
-                                min={formData.tripDate || new Date().toISOString().split('T')[0]}
+                                min={formData.tripDate || getLocalDateInputValue()}
                                 value={formData.returnDate}
                                 onChange={(e) => updateField('returnDate', e.target.value)}
                                 className={`w-full min-h-[48px] bg-[#152438] border rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none ${

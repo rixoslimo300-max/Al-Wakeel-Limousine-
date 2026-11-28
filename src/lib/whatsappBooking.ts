@@ -10,6 +10,7 @@ import {
   allocateVehicleForTrip,
   calculateTripQuote,
   evaluateVehicleCapacity,
+  getLocalDateInputValue,
   normalizeLocationKey,
 } from './bookingEngine';
 
@@ -298,7 +299,7 @@ export function validateSectionB(data: WhatsAppBookingFormData): BookingValidati
     errors.dropoffLocation = 'الوجهة مطابقة لنقطة التحرك.';
   }
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = getLocalDateInputValue();
   const tripDateVal = sanitizeText(data.tripDate);
   if (!tripDateVal) {
     errors.tripDate = 'حدد تاريخ الرحلة.';
@@ -322,7 +323,7 @@ export function validateReturnSection(data: WhatsAppBookingFormData): BookingVal
   const errors: BookingValidationErrors = {};
   if (!data.hasReturnTrip) return errors;
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = getLocalDateInputValue();
   const retDate = sanitizeText(data.returnDate);
   const retTime = sanitizeText(data.returnTime);
   const retPickup = sanitizeText(data.returnPickupLocation);

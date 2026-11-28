@@ -16,7 +16,6 @@ import {
   OFFICIAL_ROUTE_PRICING,
   OFFICIAL_WHATSAPP_BASE_URL,
   SERVICE_CATEGORIES,
-  UNLISTED_ROUTE_QUOTE_MESSAGE_AR,
   calculateTripQuote,
   extractStructuredRouteRules,
 } from '../lib/bookingEngine';
@@ -140,10 +139,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             <span>انتقالات المطارات · Airport Transfers</span>
           </div>
           <h2 className="font-section-heading text-white">
-            انتقالات خاصة مباشرة من وإلى المطارات
+            قبل موعد الطيران… احسم تفاصيل انتقالك من الإسكندرية
           </h2>
           <p className="font-body text-[#9A9A96] leading-relaxed">
-            رحلات توصيل خاصة من نقطة إلى نقطة (ذهاب أو عودة) بخصوصية كاملة دون مشاركة السيارة، مع أسعار ثابتة وواضحة للمطارات المعتمدة.
+            سواء كانت وجهتك مطار برج العرب أو مطار القاهرة أو مطار سفنكس، أدخل تفاصيل الرحلة واختر الفئة التي تستوعب ركابك وحقائبك. يعرض التطبيق سعر المسارات المعتمدة، ويتيح طلب عرض سعر للمسارات غير المسعّرة قبل إرسال الحجز.
           </p>
         </div>
 
@@ -198,13 +197,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                           className="block group-hover:text-[#DFC89B] transition-colors focus-visible:outline-none after:absolute after:inset-0 after:z-10"
                         >
                           <h3 className="font-section-heading text-white leading-snug group-hover:text-[#DFC89B] transition-colors">
-                            {meta.titleAr} — انتقالات المطارات
+                            {item.key === 'sedan_comfort' ? 'ليموزين سيدان للمطار — انتقال خاص حتى 3 ركاب' : 'فئة بريميوم للمطار — مساحة أوسع للركاب والحقائب'}
                           </h3>
                         </a>
                       </div>
 
                       <p className="font-body text-[#9A9A96] leading-relaxed">
-                        {meta.descriptionAr}
+                        {item.key === 'sedan_comfort' ? 'لرحلة فردية أو مع مرافقين: سيارة خاصة حتى 3 ركاب وحقيبتين، مع إظهار سعر المسار المعتمد قبل إرسال الحجز.' : 'لما تحتاج مساحة أوسع: فئة بريميوم حتى 4 ركاب و4 حقائب، أو 5–6 ركاب دون حقائب، وفق حدود السعة المعتمدة.'}
                       </p>
 
                       {/* Official Airport Routes & Fixed Prices */}
@@ -274,9 +273,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         {/* Unlisted Route Clear Handling Banner */}
         <div className="bg-[#101D2D] border border-[#C9A96B]/20 rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-right">
           <div className="space-y-1">
-            <h3 className="font-subheading text-white">هل وجهتك خارج مسارات المطارات المذكورة؟</h3>
+            <h3 className="font-subheading text-white">وجهتك مختلفة عن المسارات المعروضة؟</h3>
             <p className="font-sub text-[#9A9A96]">
-              للمسارات غير المدرجة أو التنقلات الخاصة بين المحافظات: {UNLISTED_ROUTE_QUOTE_MESSAGE_AR}.
+              لأي مسار غير مدرج أو انتقال خاص بين المحافظات، أرسل تفاصيل نقطة التحرك والوجهة والموعد لتحصل على عرض سعر قبل تأكيد الرحلة.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -308,9 +307,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
         {/* Dedicated Airport-Only Advantages Block */}
         <div className="pt-4 border-t border-[#C9A96B]/20 space-y-6">
           <div className="space-y-1.5 text-right">
-            <h3 className="font-subheading text-white">مزايا خدمة انتقالات المطارات</h3>
+            <h3 className="font-subheading text-white">تفاصيل تجعل ترتيب انتقال المطار أوضح من البداية</h3>
             <p className="font-sub text-[#91B9C8]">
-              المزايا التالية مخصصة حصرياً لخدمة التوصيل من وإلى المطارات:
+              راجع ما تتضمنه خدمة انتقالات المطارات قبل اختيار المسار وإرسال الحجز.
             </p>
           </div>
 

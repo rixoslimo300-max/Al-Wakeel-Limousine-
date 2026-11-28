@@ -114,7 +114,7 @@ export const DailyRentalSection: React.FC<DailyRentalSectionProps> = ({
                     className="w-full min-h-[48px] bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold py-3 px-5 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base whitespace-nowrap"
                   >
                     <span>
-                      {pkg.id === 'daily-rental-8h' ? 'احجز باقة 8 ساعات' : 'احجز باقة 12 ساعة'}
+                      {pkg.id === 'daily-rental-8h' ? 'اختار باقة 8 ساعات' : 'اختار باقة 12 ساعة'}
                     </span>
                     <ArrowUpLeft className="w-4 h-4 shrink-0" />
                   </button>
@@ -127,7 +127,7 @@ export const DailyRentalSection: React.FC<DailyRentalSectionProps> = ({
         {/* Direct Inquiry Strip for Operational Details Not Pre-Specified */}
         <div className="bg-[#152438]/70 border border-[#C9A96B]/20 rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-right">
           <p className="font-sub text-[#F6F5F1]/90 leading-relaxed max-w-2xl">
-            خدمة التأجير اليومي متاحة بالباقتين المحددتين فقط داخل نطاق الإسكندرية. لتأكيد تفاصيل الاستخدام الخاصة برحلتك قبل البدء، يمكنك التواصل مباشرة مع مكتب الحجز.
+            تأجير السيارة اليومي مخصص لمشاويرك داخل الإسكندرية، بحدود واضحة للمدة والمسافة. اختار الباقة الأقرب لجدولك، ولو عندك تفاصيل خاصة راجعها مع مكتب الحجز قبل بدء الاستخدام.
           </p>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <a
