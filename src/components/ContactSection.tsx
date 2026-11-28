@@ -27,10 +27,10 @@ export const ContactSection: React.FC = () => {
               <span>التواصل الرسمي · الوكيل لخدمات الليموزين</span>
             </div>
             <h2 className="font-section-heading text-white">
-              تواصل معنا
+              خلّي تفاصيل رحلتك أوضح قبل الحجز
             </h2>
             <p className="font-body text-[#9A9A96]">
-              اسأل عن ليموزين الإسكندرية والمطارات، أو راجع تفاصيل فئة الخدمة والسعر قبل إرسال الحجز عبر الهاتف أو واتساب.
+              تحتاج تعرف أنسب فئة أو سعر مسارك من الإسكندرية إلى المطارات؟ تواصل مع مكتب الحجز لمراجعة تفاصيل الرحلة قبل إرسال الطلب.
             </p>
           </div>
 
@@ -49,9 +49,9 @@ export const ContactSection: React.FC = () => {
                   <PhoneCall className="w-5 h-5 stroke-[1.75]" />
                 </div>
                 <div>
-                  <h3 className="font-card-heading text-white">تحتاج إجابة قبل الحجز؟</h3>
+                  <h3 className="font-card-heading text-white">محتار بين فئتين أو محتاج عرض سعر؟</h3>
                   <p className="font-sub text-[#9A9A96] mt-1">
-                    اتصل بمكتب الحجز لمراجعة مسارك وفئة الخدمة وتفاصيل السعر.
+                    اتصل لمراجعة عدد الركاب والحقائب والوجهة، ومعرفة السعر أو طلب عرض للمسار غير المدرج.
                   </p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export const ContactSection: React.FC = () => {
                 <div>
                   <h3 className="font-card-heading text-white">واتساب</h3>
                   <p className="font-sub text-[#9A9A96] mt-1">
-                    أرسل تفاصيل رحلتك واستفسر عن المسارات والأسعار عبر الرقم الرسمي.
+                    أرسل نقطة التحرك والوجهة والموعد وعدد الركاب والحقائب، لمراجعة المسار والسعر مع مكتب الحجز.
                   </p>
                 </div>
               </div>
@@ -95,7 +95,7 @@ export const ContactSection: React.FC = () => {
                   className="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-[#C9A96B] hover:bg-[#d4b679] text-[#101D2D] font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
                 >
                   <WhatsAppGlyph className="w-4 h-4 shrink-0" />
-                  <span>تواصل معنا عبر واتساب</span>
+                  <span>خلّي تفاصيل رحلتك أوضح قبل الحجز عبر واتساب</span>
                 </a>
               </div>
             </LuxuryTiltCard>
